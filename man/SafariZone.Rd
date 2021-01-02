@@ -55,24 +55,6 @@ The Pokemon Company (\url{https://www.pokemon.co.jp/}).
 \item{\code{balls}}{Safari Balls remaining (30 at start).}
 
 \item{\code{captures}}{Wild Pokemon captured (0 at start).}
-
-\item{\code{pkmn_sp}}{Species of Pokemon in latest encounter.}
-
-\item{\code{pkmn_lvl}}{Level of Pokemon in latest encounter.}
-
-\item{\code{pkmn_hp}}{Hit Points (HP) of Pokemon in latest encounter.}
-
-\item{\code{pkmn_catch_base}}{Base catch rate of Pokemon in latest encounter.}
-
-\item{\code{pkmn_catch_mod}}{Modified base catch rate of Pokemon in latest encounter.}
-
-\item{\code{pkmn_speed_base}}{Base speed of Pokemon in latest encounter.}
-
-\item{\code{pkmn_speed_ind}}{Individual speed of Pokemon in latest encounter.}
-
-\item{\code{pkmn_angry}}{Anger status of Pokemon in latest encounter.}
-
-\item{\code{pkmn_eating}}{Eating status of Pokemon in latest encounter.}
 }
 \if{html}{\out{</div>}}
 }
