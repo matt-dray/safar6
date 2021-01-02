@@ -141,6 +141,8 @@ SafariZone <- R6::R6Class("SafariZone",
             }
           }
 
+          # Player's turn ----
+
           # Ask player to choose from options
           cat("------------------------\n",
               paste0("BALLx", self$balls),
@@ -197,25 +199,27 @@ SafariZone <- R6::R6Class("SafariZone",
             cat("Got away safely!")
             encounter_active <- FALSE  # braek loop
 
-            }
+          }
 
-          # # Wild Pokemon's turn
-          # X <- (self$pkmn_speed %% 256) * 2
-          # if (X > 255) {
-          #   cat("Wild", pkmn$species, "ran away!")
-          # }
-          # if (self$pkmn_angry > 0) { X <- min(X * 2, 255) }
-          # if (self$pkmn_eating > 0) { X <- X / 4 }
-          # R <- sample(0:255, 1)
-          # if (R < X) {
-          #   cat("Wild", pkmn$species, "ran away!")
-          # }
+          # Wild Pokemon's turn ----
+
+          # Speed-based factor with status impacts
+          X <- (pkmn$speed_base %% 256) * 2
+          if (status_eating > 0) {
+            X <- X / 4
+          } else if (status_angry > 0) {
+            X <- min(X * 2, 255)
+          }
+          if (sample(0:255, 1) < X) {  # RNG
+            cat("Wild", pkmn$species, "ran away!")
+            encounter_active <- FALSE  # break loop
+          }
 
           # Check if balls remain
           if (self$balls == 0) {
             cat("PA: Ding-dong!\nTime's up!\nPA: Your SAFARI GAME is over!\n",
                 "Did you get a good haul?\nCome again!", sep = "")
-            encounter_active <- FALSE
+            encounter_active <- FALSE   # break loop
           }
 
         }
