@@ -54,7 +54,9 @@ The Pokemon Company (\url{https://www.pokemon.co.jp/}).
 
 \item{\code{balls}}{Safari Balls remaining (30 at start).}
 
-\item{\code{captures}}{Wild Pokemon captured (0 at start).}
+\item{\code{captures}}{Count of wild Pokemon captured (0 at start).}
+
+\item{\code{bills_pc}}{Details of Wild Pokemon captured (empty at start).}
 }
 \if{html}{\out{</div>}}
 }
