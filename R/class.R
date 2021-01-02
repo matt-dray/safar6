@@ -26,8 +26,10 @@ SafariZone <- R6::R6Class("SafariZone",
     steps = 500,
     #' @field balls Safari Balls remaining (30 at start).
     balls = 30,
-    #' @field captures Wild Pokemon captured (0 at start).
+    #' @field captures Count of wild Pokemon captured (0 at start).
     captures = 0,
+    #' @field bills_pc Details of Wild Pokemon captured (empty at start).
+    bills_pc = data.frame(species = NULL, level = NULL),
 
     # Methods ----
 
@@ -173,11 +175,21 @@ SafariZone <- R6::R6Class("SafariZone",
 
               # If it didn't break free and HP-related RNG is met
               if (F3 >= sample(0:255, 1)) {
+
+                # Capture notice
                 cat("All right!\n", pkmn$species, " was caught!\n",
                     pkmn$species, " was transferred to BILL's PC!\n",
                     sep = "")
+
+                # Update capture count and Bill's PC
                 self$captures <- self$captures + 1  # increment catch count
-                encounter_active <- FALSE  # break loop
+                self$bills_pc <- rbind(
+                  self$bills_pc,
+                  data.frame(species = pkmn$species, level = pkmn$level)
+                )
+
+                # Break loop
+                encounter_active <- FALSE
 
               } else {
 
@@ -232,11 +244,20 @@ SafariZone <- R6::R6Class("SafariZone",
 
           # Check if balls remain
           if (self$balls == 0 | self$steps == 0) {
-            cat("PA: Ding-dong!\nTime's up!\nPA: Your SAFARI GAME is over!\n",
+
+            # End game notice and results
+            cat("------------------------\n",
+                "PA: Ding-dong!\nTime's up!\nPA: Your SAFARI GAME is over!\n",
                 "Did you get a good haul?\nCome again!\n",
-                "------------------------\nResult:",
-                self$captures, " transferred to BILL's PC",
+                "------------------------\nResult: ",
+                self$captures, " transferred to BILL's PC\n",
                 sep = "")
+
+            # Print details of catches
+            if (self$captures > 0) {
+              print(self$bills_pc)
+            }
+
             encounter_active <- FALSE   # break loop
           }
 
