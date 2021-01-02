@@ -96,7 +96,7 @@ SafariZone <- R6::R6Class("SafariZone",
 
         # Select species/level by encounter rate
         pkmn <-
-          dplyr::slice_sample(pokemon, weight_by = encounter_rate)
+          dplyr::slice_sample(safar6::pokemon, weight_by = encounter_rate)
         cat("Wild", pkmn$species, paste0("L", pkmn$level), "appeared!\n")
 
         # Starting encounter details
