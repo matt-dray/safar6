@@ -32,12 +32,22 @@ This project is a demonstration of [the {R6}
 package](https://r6.r-lib.org/) and the R6-class for object-oriented
 programming in R. It’s purely for learning purposes.
 
-## Use
+## Play
 
-Install with `remotes::install_github("matt-dray/safar6")`. Initialise
-with `sz <- safar6::SafariZone$new()` and access methods like
-`sz$pause()` and `sz$step()`. For help with fields and methods see
-`?SafariZone`.
+Install from GitHub with `remotes::install_github("matt-dray/safar6")`.
+
+Initialise with e.g. `sz <- safar6::SafariZone$new()`.
+
+`sz$step()` to take a step in the Safari Zone. There’s an x% chance
+you’ll encounter a Pokémon. The species and level of that Pokémon are
+based on an encounter rate. You’ll be prompted to throw a Safari Ball,
+throw bait, throw a rock or run. Bait and rocks influence catch rates.
+The Pokémon’s level and HP also influence catchability. Try to catch as
+many Pokémon as you can before you run out of steps or balls.
+
+`sz$pause()` to ‘pause’ the game and see current stats.
+
+For help with fields and methods see `?safar6::SafariZone`.
 
 ## Details
 
@@ -51,16 +61,8 @@ the target.
 
 ### Technicals
 
-There are two types of field in the class:
-
--   ‘overworld’ counters: number of steps remaining, number of balls
-    remaining, number of captures made
--   encounter-related states (which are refreshed at the start of an
-    encounter and modified throughout): species, level, HP, speed, catch
-    rate, and angry and eating statuses
-
-The fields are `private`; they shouldn’t be influenced from outside the
-class.
+The fields in the `SafariZone` class are ‘overworld’ counters: number of
+steps remaining, number of balls remaining and number of captures made.
 
 Methods are:
 
@@ -73,9 +75,6 @@ The `$step()` method contains code that:
 
 -   decides whether you encountered a target, based on the encounter
     rate of the Safari Zone
-
-Todo implement my pre-written `$step()` code that:
-
 -   selects the wild Pokémon, based on the relative encounter rate for
     the Safari Zone Center Area, and generates some IVs
 -   prompts you for an action
@@ -83,6 +82,16 @@ Todo implement my pre-written `$step()` code that:
 -   influences the ‘angry’ and ‘eating’ values of the target
 -   calculates the chance the target will flee at the end of each turn,
     based on fields like catch rate, HP, speed, anger and eating status
+
+TODO:
+
+-   “New POKeDEX data will be added for \[x\].”
+-   “Do you want to give a nickname to \[x\]?”
+-   “\[x\] was transferred to BILL’s PC!”
+-   BILL’s PC
+-   IVs
+-   wobble
+-   an Easter egg…
 
 ### Not included
 
