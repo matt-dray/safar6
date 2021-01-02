@@ -129,7 +129,9 @@ SafariZone <- R6::R6Class("SafariZone",
         # Encounter while loop
         while (encounter_active == TRUE) {
 
-          # Adjust eating/anger status at start of turn
+          # Adjust eating/anger status ----
+
+          # Decrease counter at start of turn
           if (status_eating > 0) {
             cat("Wild", pkmn$species, "is eating!\n")
             status_eating <- status_eating - 1
@@ -226,22 +228,21 @@ SafariZone <- R6::R6Class("SafariZone",
             encounter_active <- FALSE  # break loop
           }
 
+          # Check counters ----
+
           # Check if balls remain
-          if (self$balls == 0) {
+          if (self$balls == 0 | self$steps == 0) {
             cat("PA: Ding-dong!\nTime's up!\nPA: Your SAFARI GAME is over!\n",
-                "Did you get a good haul?\nCome again!", sep = "")
+                "Did you get a good haul?\nCome again!\n",
+                "------------------------\nResult:",
+                self$captures, " transferred to BILL's PC",
+                sep = "")
             encounter_active <- FALSE   # break loop
           }
 
         }
 
       }
-
-      # Game ends if you've run out of steps or balls
-      if (self$steps == 0) {
-        cat("PA: Ding-dong!\nTime's up!\nPA: Your SAFARI GAME is over!\n",
-            "Did you get a good haul?\nCome again!")
-        }
 
       invisible(self)
 
