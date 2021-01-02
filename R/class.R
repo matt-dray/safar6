@@ -33,22 +33,22 @@ SafariZone <- R6::R6Class("SafariZone",
 
     #' @field pkmn_sp Species of Pokemon in latest encounter.
     pkmn_sp = "MISSINGNO.",
-    #' @field pkmn_lvl Level of Pokemon in latest encounter.
-    pkmn_lvl = NULL,
-    #' @field pkmn_hp Hit Points (HP) of Pokemon in latest encounter.
-    pkmn_hp = NULL,
-    #' @field pkmn_catch_base Base catch rate of Pokemon in latest encounter.
-    pkmn_catch_base = NULL,
-    #' @field pkmn_catch_mod Modified base catch rate of Pokemon in latest encounter.
-    pkmn_catch_mod = NULL,
-    #' @field pkmn_speed_base Base speed of Pokemon in latest encounter.
-    pkmn_speed_base = NULL,
-    #' @field pkmn_speed_ind Individual speed of Pokemon in latest encounter.
-    pkmn_speed_ind = NULL,
-    #' @field pkmn_angry Anger status of Pokemon in latest encounter.
-    pkmn_angry = 0L,
-    #' @field pkmn_eating Eating status of Pokemon in latest encounter.
-    pkmn_eating = 0L,
+    #' #' @field pkmn_lvl Level of Pokemon in latest encounter.
+    #' pkmn_lvl = NULL,
+    #' #' @field pkmn_hp Hit Points (HP) of Pokemon in latest encounter.
+    #' pkmn_hp = NULL,
+    #' #' @field pkmn_catch_base Base catch rate of Pokemon in latest encounter.
+    #' pkmn_catch_base = NULL,
+    #' #' @field pkmn_catch_mod Modified base catch rate of Pokemon in latest encounter.
+    #' pkmn_catch_mod = NULL,
+    #' #' @field pkmn_speed_base Base speed of Pokemon in latest encounter.
+    #' pkmn_speed_base = NULL,
+    #' #' @field pkmn_speed_ind Individual speed of Pokemon in latest encounter.
+    #' pkmn_speed_ind = NULL,
+    #' #' @field pkmn_angry Anger status of Pokemon in latest encounter.
+    #' pkmn_angry = 0L,
+    #' #' @field pkmn_eating Eating status of Pokemon in latest encounter.
+    #' pkmn_eating = 0L,
 
     # Methods ----
 
@@ -103,54 +103,56 @@ SafariZone <- R6::R6Class("SafariZone",
     step = function() {
 
       # You must have steps remaining to continue
-      if (self$steps > 0) {
+      if (self$steps == 0 | self$balls == 0) {
+        cat("PA: Ding-dong!\nTime's up!\nPA: Your SAFARI GAME is over!\n",
+            "Did you get a good haul?\nCome again!")
+      } else if (self$steps > 0) {
         self$steps <- self$steps - 1
-      } else if (self$steps == 0) {
-        cat("No more steps!")
+        cat(paste0(self$steps, "/500\n"))
       }
-
-      # Reminder of steps
-      cat(paste0(self$steps, "/500\n"))
 
       # Encounter
       if (sample(0:255, 1) < 30) {  # base encounter rate is 30 in Safari Zone
 
         # Select species/level by encounter rate
-        encounter_pkmn <-
+        pkmn <-
           dplyr::slice_sample(pokemon, weight_by = encounter_rate)
+        cat("Wild", pkmn$species,
+            paste0("L", pkmn$level), "appeared!\n")
 
-        # Print encounter details
-        cat("Wild", encounter_pkmn$species,
-            paste0("L", encounter_pkmn$level), "appeared!\n")
+        # Starting encounter details
+        encounter_active <- TRUE
+        status_eating <- 0
+        status_angry  <- 0
+        status_catch <- pkmn$catch_base
 
-        ## code below should be in a while loop so that you get player turn
-        ## followed by pokemon turn until you run, it's caught or it runs
-
-        encounter_active <- TRUE  # encounter is active to start
-
+        # Encounter while loop
         while (encounter_active == TRUE) {
 
-          # # Adjust anger and eating status at start of turn
-          # if (private$pkmn_angry > 0) {
-          #   cat("Wild [x] is angry!")
-          #   self$pkmn_angry <- self$pkmn_angry - 1
-          #   if (self$pkmn_angry == 0) {
-          #     self$pkmn_c <- self$pkmn_base_c
-          #   }
-          # } else if (self$pkmn_eating > 0) {
-          #   cat("Wild [x] is eating!")
-          #   self$pkmn_eating <- self$pkmn_eating - 1
-          # }
+          # Adjust eating/anger status at start of turn
+          if (status_eating > 0) {
+            cat("Wild", pkmn$species, "is eating!\n")
+            status_eating <- status_eating - 1
+          } else if (status_angry > 0) {
+            cat("Wild", pkmn$species, "is angry!\n")
+            status_angry <- status_angry - 1
+            if (status_angry == 0) {
+              status_catch <- pkmn$catch_base  # returns to original rate
+            }
+          }
 
           # Ask player to choose from options
-          player_action <- readline(
-            paste0("BALLx", self$balls, " (1), BAIT (2), ROCK (3), RUN (4)? "))
+          cat("------------------------\n",
+              paste0("BALLx", self$balls),
+              " (1)     BAIT (2)\nTHROW ROCK (3)  RUN (4)\n",
+              sep = "")
+          player_action <- readline("Selection: ")
 
           # Ifelse chain dependent on player selection
           if (player_action %in% c("BALL", "1")) {  # throw Safari Ball
 
             # Reduce balls by 1
-            cat("BLUE used SAFARI BALL!")
+            cat("BLUE used SAFARI BALL!\n")
             self$balls <- self$balls - 1
 
             # # Calculate catch chance
@@ -162,7 +164,7 @@ SafariZone <- R6::R6Class("SafariZone",
             # # Fail
             # if (private$pkmn_catch_base < Rstar) {
             #   cat("Darn! The POKeMON broke free!\nWild",
-            #       encounter_pkmn$species, "ran!")
+            #       pkmn$species, "ran!")
             # }
             #
             # # Second chance
@@ -174,37 +176,47 @@ SafariZone <- R6::R6Class("SafariZone",
 
           } else if (player_action %in% c("BAIT", "2")) {  # throw bait
 
-            cat("BLUE threw some BAIT.\nWild",
-                encounter_pkmn$species, "is eating!")
+            cat("BLUE threw some BAIT.\n")
 
-            # self$pkmn_catch <- floor(private$pkmn_catch_base / 2)
-            # self$pkmn_eating <- private$pkmn_eating + sample(1:5, 1)
-            # self$pkmn_angry <- 0
+            # Make status adjustments
+            status_catch <- floor(status_catch / 2)  # adjust catch rate
+            status_eating <- status_eating + sample(1:5, 1)  # adjust +1 to 5
+            status_angry <- 0  # reset anger status
 
           } else if (player_action %in% c("ROCK", "3")) {  # throw rock
 
-            cat("BLUE threw a ROCK.\nWild", encounter_pkmn$species, "is angry!")
+            cat("BLUE threw a ROCK.\n")
 
-            # private$pkmn_catch <- min(private$pkmn_catch_base * 2, 255)
-            # private$pkmn_angry <- private$pkmn_angry + sample(1:5, 1)
-            # private$pkmn_eating <- 0
+            # Make status adjustments
+            status_catch <- min(status_catch * 2, 255)  # adjust catch rate
+            status_angry <- status_angry + sample(1:5, 1)  # adjust +1 to 5
+            status_eating <- 0  # reset eating status
 
           } else if (player_action %in% c("RUN", "4")) {  # exit encounter
+
             cat("Got away safely!")
-            encounter_active <- FALSE
-          }
+            encounter_active <- FALSE  # braek loop
+
+            }
 
           # # Wild Pokemon's turn
           # X <- (self$pkmn_speed %% 256) * 2
           # if (X > 255) {
-          #   cat("Wild", encounter_pkmn$species, "ran away!")
+          #   cat("Wild", pkmn$species, "ran away!")
           # }
           # if (self$pkmn_angry > 0) { X <- min(X * 2, 255) }
           # if (self$pkmn_eating > 0) { X <- X / 4 }
           # R <- sample(0:255, 1)
           # if (R < X) {
-          #   cat("Wild", encounter_pkmn$species, "ran away!")
+          #   cat("Wild", pkmn$species, "ran away!")
           # }
+
+          # Check if balls remain
+          if (self$balls == 0) {
+            cat("PA: Ding-dong!\nTime's up!\nPA: Your SAFARI GAME is over!\n",
+                "Did you get a good haul?\nCome again!", sep = "")
+            encounter_active <- FALSE
+          }
 
         }
 

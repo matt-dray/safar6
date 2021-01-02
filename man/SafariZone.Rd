@@ -56,23 +56,23 @@ The Pokemon Company (\url{https://www.pokemon.co.jp/}).
 
 \item{\code{captures}}{Wild Pokemon captured (0 at start).}
 
-\item{\code{pkmn_sp}}{Species of Pokemon in latest encounter.}
-
-\item{\code{pkmn_lvl}}{Level of Pokemon in latest encounter.}
-
-\item{\code{pkmn_hp}}{Hit Points (HP) of Pokemon in latest encounter.}
-
-\item{\code{pkmn_catch_base}}{Base catch rate of Pokemon in latest encounter.}
-
-\item{\code{pkmn_catch_mod}}{Modified base catch rate of Pokemon in latest encounter.}
-
-\item{\code{pkmn_speed_base}}{Base speed of Pokemon in latest encounter.}
-
-\item{\code{pkmn_speed_ind}}{Individual speed of Pokemon in latest encounter.}
-
-\item{\code{pkmn_angry}}{Anger status of Pokemon in latest encounter.}
-
-\item{\code{pkmn_eating}}{Eating status of Pokemon in latest encounter.}
+\item{\code{pkmn_sp}}{Species of Pokemon in latest encounter.
+#' @field pkmn_lvl Level of Pokemon in latest encounter.
+pkmn_lvl = NULL,
+#' @field pkmn_hp Hit Points (HP) of Pokemon in latest encounter.
+pkmn_hp = NULL,
+#' @field pkmn_catch_base Base catch rate of Pokemon in latest encounter.
+pkmn_catch_base = NULL,
+#' @field pkmn_catch_mod Modified base catch rate of Pokemon in latest encounter.
+pkmn_catch_mod = NULL,
+#' @field pkmn_speed_base Base speed of Pokemon in latest encounter.
+pkmn_speed_base = NULL,
+#' @field pkmn_speed_ind Individual speed of Pokemon in latest encounter.
+pkmn_speed_ind = NULL,
+#' @field pkmn_angry Anger status of Pokemon in latest encounter.
+pkmn_angry = 0L,
+#' @field pkmn_eating Eating status of Pokemon in latest encounter.
+pkmn_eating = 0L,}
 }
 \if{html}{\out{</div>}}
 }
