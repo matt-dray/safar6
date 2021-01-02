@@ -20,35 +20,12 @@ SafariZone <- R6::R6Class("SafariZone",
 
     # Fields ----
 
-    # Overworld status
-
     #' @field steps Steps remaining (500 at start).
     steps = 500,
     #' @field balls Safari Balls remaining (30 at start).
     balls = 30,
     #' @field captures Wild Pokemon captured (0 at start).
     captures = 0,
-
-    # Latest encounter attributes
-
-    #' @field pkmn_sp Species of Pokemon in latest encounter.
-    pkmn_sp = "MISSINGNO.",
-    #' #' @field pkmn_lvl Level of Pokemon in latest encounter.
-    #' pkmn_lvl = NULL,
-    #' #' @field pkmn_hp Hit Points (HP) of Pokemon in latest encounter.
-    #' pkmn_hp = NULL,
-    #' #' @field pkmn_catch_base Base catch rate of Pokemon in latest encounter.
-    #' pkmn_catch_base = NULL,
-    #' #' @field pkmn_catch_mod Modified base catch rate of Pokemon in latest encounter.
-    #' pkmn_catch_mod = NULL,
-    #' #' @field pkmn_speed_base Base speed of Pokemon in latest encounter.
-    #' pkmn_speed_base = NULL,
-    #' #' @field pkmn_speed_ind Individual speed of Pokemon in latest encounter.
-    #' pkmn_speed_ind = NULL,
-    #' #' @field pkmn_angry Anger status of Pokemon in latest encounter.
-    #' pkmn_angry = 0L,
-    #' #' @field pkmn_eating Eating status of Pokemon in latest encounter.
-    #' pkmn_eating = 0L,
 
     # Methods ----
 
@@ -78,6 +55,7 @@ SafariZone <- R6::R6Class("SafariZone",
     print = function() {
       cat(paste0(self$steps, "/500\n"))
       cat(paste0("BALLx", self$balls, "\n"))
+      cat(paste0("Captured", self$captures, "\n"))
     },
 
     #' @description
@@ -117,14 +95,14 @@ SafariZone <- R6::R6Class("SafariZone",
         # Select species/level by encounter rate
         pkmn <-
           dplyr::slice_sample(pokemon, weight_by = encounter_rate)
-        cat("Wild", pkmn$species,
-            paste0("L", pkmn$level), "appeared!\n")
+        cat("Wild", pkmn$species, paste0("L", pkmn$level), "appeared!\n")
 
         # Starting encounter details
         encounter_active <- TRUE
         status_eating <- 0
         status_angry  <- 0
         status_catch <- pkmn$catch_base
+        status_break_free <- NULL
 
         # Encounter while loop
         while (encounter_active == TRUE) {
@@ -157,24 +135,26 @@ SafariZone <- R6::R6Class("SafariZone",
             cat("BLUE used SAFARI BALL!\n")
             self$balls <- self$balls - 1
 
-            # # Calculate catch chance
-            # Rstar <- sample(0:150, 1)  # ball RNG
-            # F1 <- (private$pkmn_hp * 255) / 12  # HP factor
-            # F2 <- max(private$pkmn_hp / 4, 1)
-            # F3 <- min(F1 / F2, 255)
-            #
-            # # Fail
-            # if (private$pkmn_catch_base < Rstar) {
-            #   cat("Darn! The POKeMON broke free!\nWild",
-            #       pkmn$species, "ran!")
-            # }
-            #
-            # # Second chance
-            # R2 <- sample(0:255, 1)
-            # if (R2 <= F1) {
-            #   cat("caught")
-            #   private$captures <- private$captures + 1
-            # }
+            # Break free based on catch rate and Safari Ball RNG
+            if (status_catch < sample(0:150, 1) ) {
+              cat("Darn! The POKeMON broke free!\n")
+              status_break_free <- TRUE
+            }
+
+            # Catch chance based on Pokemon HP
+            F1 <- (pkmn$hp_base * 255) / 12
+            F2 <- max(pkmn$hp_base / 4, 1)
+            F3 <- min(F1 / F2, 255)
+
+            # If it didn't break free and HP-related RNG is met
+            if (!isTRUE(status_break_free) & sample(0:255, 1) <= F3) {
+              cat("All right!\n", pkmn$species, "was caught!\n",
+                  pkmn$species, " was transferred to BILL's PC!\n",
+                  sep = "")
+              self$captures <- self$captures + 1  # increment catch count
+              status_break_free <- NULL  # reset break-free status
+              encounter_active <- FALSE  # break loop
+            }
 
           } else if (player_action %in% c("BAIT", "2")) {  # throw bait
 
@@ -211,7 +191,7 @@ SafariZone <- R6::R6Class("SafariZone",
             X <- min(X * 2, 255)
           }
           if (sample(0:255, 1) < X) {  # RNG
-            cat("Wild", pkmn$species, "ran away!")
+            cat("Wild", pkmn$species, "ran away!\n")
             encounter_active <- FALSE  # break loop
           }
 
