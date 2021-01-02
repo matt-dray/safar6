@@ -11,6 +11,8 @@
 #' Nintendo (\url{https://www.nintendo.com}). Pokemon as a property is owned by
 #' The Pokemon Company (\url{https://www.pokemon.co.jp/}).
 #'
+#' @export
+#'
 #' @examples
 #' \dontrun{sz <- safar6::SafariZone}
 
