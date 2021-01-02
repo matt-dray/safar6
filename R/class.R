@@ -99,6 +99,29 @@ SafariZone <- R6::R6Class("SafariZone",
           dplyr::slice_sample(safar6::pokemon, weight_by = encounter_rate)
         cat("Wild", pkmn$species, paste0("L", pkmn$level), "appeared!\n")
 
+        # Set individual values and calculated Hp and speed
+        iv_atk <- sample(1:15, 1)
+        iv_def <- sample(1:15, 1)
+        iv_spd <- sample(1:15, 1)
+        iv_spc <- sample(1:15, 1)
+        iv_hp <- 0
+        if (iv_atk %% 2 != 0) {
+          iv_hp <- iv_hp + 8
+        }
+        if (iv_def %% 2 != 0){
+          iv_hp <- iv_hp + 4
+        }
+        if (iv_spd %% 2 != 0){
+          iv_hp <- iv_hp + 2
+        }
+        if (iv_spc %% 2 != 0){
+          iv_hp <- iv_hp + 1
+        }
+        pkmn$hp_indiv <-
+          floor((((pkmn$hp_base + iv_hp) * 2) * pkmn$level) / 100) + pkmn$level + 10
+        pkmn$speed_indiv <-
+          floor((((pkmn$speed_base + iv_spd) * 2) * pkmn$level) / 100) + 5
+
         # Starting encounter details
         encounter_active <- TRUE
         status_eating <- 0
@@ -144,9 +167,9 @@ SafariZone <- R6::R6Class("SafariZone",
             }
 
             # Catch chance based on Pokemon HP
-            F1 <- (pkmn$hp_base * 255) / 12
-            F2 <- max(pkmn$hp_base / 4, 1)
-            F3 <- min(F1 / F2, 255)
+            F1 <- (pkmn$hp_indiv * 255) / 12  # 12 is Safari Ball factor
+            F2 <- max(pkmn$hp_indiv / 4, 1)  # divide by 4, but can't be 0
+            F3 <- min(F1 / F2, 255)  # divide but can't be >255
 
             # If it didn't break free and HP-related RNG is met
             if (!isTRUE(status_break_free) & sample(0:255, 1) <= F3) {
@@ -186,7 +209,7 @@ SafariZone <- R6::R6Class("SafariZone",
           # Wild Pokemon's turn ----
 
           # Speed-based factor with status impacts
-          X <- (pkmn$speed_base %% 256) * 2
+          X <- (pkmn$speed_indiv %% 256) * 2
           if (status_eating > 0) {
             X <- X / 4
           } else if (status_angry > 0) {
