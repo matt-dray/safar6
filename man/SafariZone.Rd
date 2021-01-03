@@ -14,7 +14,7 @@ Nintendo (\url{https://www.nintendo.com}). Pokemon as a property is owned by
 The Pokemon Company (\url{https://www.pokemon.co.jp/}).
 }
 \examples{
-\dontrun{sz <- safar6::SafariZone}
+\dontrun{ sz <- safar6::SafariZone$new() }
 
 ## ------------------------------------------------
 ## Method `SafariZone$print`
@@ -40,8 +40,7 @@ The Pokemon Company (\url{https://www.pokemon.co.jp/}).
 
 \dontrun{
     sz <- safar6::SafariZone  # initialise class
-    sz$step()   # take step
-    sz$pause()  # steps has reduced by one
+    sz$step()   # take step, prints steps remaining
 }
 }
 \seealso{
@@ -56,7 +55,7 @@ The Pokemon Company (\url{https://www.pokemon.co.jp/}).
 
 \item{\code{captures}}{Count of wild Pokemon captured (0 at start).}
 
-\item{\code{bills_pc}}{Details of Wild Pokemon captured (empty at start).}
+\item{\code{bills_pc}}{Dataframe of wild Pokemon captured (empty at start).}
 }
 \if{html}{\out{</div>}}
 }
@@ -147,8 +146,7 @@ Either nothing, or a wild encounter.
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
     sz <- safar6::SafariZone  # initialise class
-    sz$step()   # take step
-    sz$pause()  # steps has reduced by one
+    sz$step()   # take step, prints steps remaining
 }
 }
 \if{html}{\out{</div>}}
