@@ -32,79 +32,161 @@ This project is a demonstration of [the {R6}
 package](https://r6.r-lib.org/) and the R6-class for object-oriented
 programming in R. It’s purely for learning purposes.
 
-## Play
+## Basic gameplay
+
+Professor Oak:
+
+> `Your very own POKéMON legend is about to unfold! A world of dreams and adventures with POKéMON awaits! Let's go!`
 
 Install from GitHub with `remotes::install_github("matt-dray/safar6")`.
 
-Initialise with e.g. `sz <- safar6::SafariZone$new()`.
+The game is text-based and takes place entirely in the console. Start a
+game like `sz <- safar6::SafariZone$new()`. Be warned: it’s tricky. But
+then so was the original.
 
-`sz$step()` to take a step in the Safari Zone. There’s an x% chance
-you’ll encounter a Pokémon. The species and level of that Pokémon are
-based on an encounter rate. You’ll be prompted to throw a Safari Ball,
-throw bait, throw a rock or run. Bait and rocks influence catch rates.
-The Pokémon’s level and HP also influence catchability. Try to catch as
-many Pokémon as you can before you run out of steps or balls.
+Use `sz$step()` to take a step through the tall grass of the Safari
+Zone. There’s a chance you’ll encounter a wild Pokémon; perhaps it will
+be a rare one at a high level. You’ll be prompted to throw a Safari Ball
+to try and catch it, with the option to throw bait or a rock to
+influence its catchability. Try to catch as many Pokémon as you can
+before you run out of steps or balls.
 
-`sz$pause()` to ‘pause’ the game and see current stats.
+Use `sz$pause()` to ‘pause’ the game and see your current stats. You can
+boot up `$bills_pc` to see which Pokémon you’ve caught so far.
 
 For help with fields and methods see `?safar6::SafariZone`.
+
+<details>
+<summary>
+Click for (contrived!) example gameplay 👾
+</summary>
+
+``` r
+sz <- safar6::SafariZone$new()
+# Welcome to the SAFARI ZONE!
+#  For just $500, you can catch all the Pokemon you want in the park!
+#  Would you like to join the hunt?
+#  > YES NO
+#  That'll be $500 please!
+#  We only use a special POKe BALL here.
+#  BLUE received 30 SAFARI BALLs!
+#  We'll call you on the PA when you run out of time or SAFARI BALLs!
+> sz$step()
+# 499/500
+> sz$step()
+# 498/500
+> sz$step()
+# 497/500
+# Wild VENONAT L22 appeared!
+# ------------------------
+# BALLx30 (1)     BAIT (2)
+# THROW ROCK (3)  RUN (4)
+# Selection: 
+> 3
+# BLUE threw a ROCK.
+# Wild VENONAT is angry!
+# ------------------------
+# BALLx30 (1)     BAIT (2)
+# THROW ROCK (3)  RUN (4)
+# Selection:
+> 1
+# BLUE used SAFARI BALL!
+# Darn! The POKeMON broke free!
+# Wild VENONAT is angry!
+# ------------------------
+# BALLx29 (1)     BAIT (2)
+# THROW ROCK (3)  RUN (4)
+# Selection: 
+> 1
+# BLUE used SAFARI BALL!
+# All right!
+# VENONAT was caught!
+# VENONAT was transferred to BILL's PC!
+> sz$pause()
+# 497/500
+# BALLx28
+# Transferred to BILL's PC: 1
+> sz$bills_pc
+#   species level
+# 1 VENONAT    22
+```
+
+</details>
 
 ## Details
 
 ### The Safari Zone
 
-The Safari Zone is an enclosed area separate from the rest of the game.
-Game mechanics are different here: you’re allowed 500 steps and 30 balls
-to capture Pokémon. Also, wild encounters don’t result in a ‘battle’;
-instead you can ‘bait’ or ‘throw a rock’ to influence the catch rate of
-the target.
+The [Safari
+Zone](https://bulbapedia.bulbagarden.net/wiki/Kanto_Safari_Zone) is an
+enclosed area separate from the rest of the game. Game mechanics are
+different here: you’re allowed 500 steps and 30 balls to capture
+Pokémon. Also, wild encounters don’t result in a ‘battle’; instead you
+can ‘bait’ or ‘throw a rock’ to influence the catch rate of the target.
+I chose to simulate this area due to its relative simplicity compared to
+other areas of the game, which use a more complex battle mechanic.
 
 ### Technicals
 
-The fields in the `SafariZone` class are ‘overworld’ counters: number of
-steps remaining, number of balls remaining and number of captures made.
+The fields in the `SafariZone` class are ‘overworld’ counters,
+basically: the number of steps and balls remaining, and the number and
+identity of captures you’ve made.
 
 Methods are:
 
+-   `$new()` to initialise the class and start the game
+-   `$step()`, which moves your ‘player’ and may result in an encounter
 -   `$pause()` (a copy of the `$print()` method) to simulate the pause
     screen from the game, showing the current number of steps and balls
     remaining
--   `$step()`, which moves your ‘player’ and may result in an encounter
 
-The `$step()` method contains code that:
+The `$step()` method does the hard work. It contains code that:
 
 -   decides whether you encountered a target, based on the encounter
-    rate of the Safari Zone
--   selects the wild Pokémon, based on the relative encounter rate for
-    the Safari Zone Center Area, and generates some IVs
--   prompts you for an action
--   calculates your chance of capture if you throw a ball
--   influences the ‘angry’ and ‘eating’ values of the target
--   calculates the chance the target will flee at the end of each turn,
-    based on fields like catch rate, HP, speed, anger and eating status
+    rate of the Safari Zone (\~12%)
+-   selects a wild Pokémon based on the relative encounter-rate slots
+    for the Safari Zone Center Area particular to *Pokémon Blue*
+    (e.g. 20% for a level 22 Nidoran Female through to 1% for a level 23
+    Chansey; see `safar6::pokemon` for details)
+-   generates individual variation in the selected Pokémon’s speed and
+    HP (IV values), which influence catchability
+-   prompts you interactively for an action: throw ball, bait, throw
+    rock, run
+-   adjusts the ‘angry’ and ‘eating’ values of the target and modifies
+    catch rate and run probability as a result (a rock doubles the catch
+    rate and the flee chance; bait halves the catch rate, but makes it
+    four times less likely to run )
+-   calculates whether the Pokémon will be caught or will run away
+-   terminates the game if steps or balls are depleted
 
-TODO:
+## Development
 
+### TODO
+
+-   “First, what is your name?”
 -   “New POKeDEX data will be added for \[x\].”
 -   “Do you want to give a nickname to \[x\]?”
--   “\[x\] was transferred to BILL’s PC!”
--   BILL’s PC
--   IVs
--   wobble
+-   wobble logic
 -   an Easter egg…
+
+Feel free to add ideas as
+[issues](https://www.github.com/matt-dray/safar6/issues/).
 
 ### Not included
 
-This implementation doesn’t include a number of features from the
-original. Some missing elements are:
+To keep things (much!) simpler than the original, this implementation
+doesn’t include a number of features from the original game. Some
+missing elements are:
 
 -   visuals (everything is printed in the console)
 -   movement around a map (all steps are treated as though you’re moving
     through tall grass)
--   all areas of the Safari Zone (Center, East, West and North)
+-   all areas of the Safari Zone (only the Center area is used here)
+-   finding items (they have no use in this context)
 -   fishing and use of different rod types
--   species and catch and encounter rates from the other Gen 1 versions
-    (*Red* and *Yellow*)
+-   species catch and encounter rates from the other Gen 1 versions
+    (e.g. Scyther is in *Red* rather than Pinsir; and *Yellow* has some
+    catch-rate changes)
 
 ## Sources
 
@@ -112,12 +194,13 @@ Information about game mechanics and values are relatively tricky to
 come by. I used the following resources:
 
 -   [Bulbapedia](https://bulbapedia.bulbagarden.net/) for Pokémon stats
--   [The Cave of Dragonflies](https://www.dragonflycave.com/) for
-    explanations of game mechanics
--   The [pret/pokered GitHub repo](https://github.com/pret/pokered) for
-    a dissassembly of the games
--   The [Pokémon Slots](https://sites.google.com/site/pokemonslots)
+    and game mechanics
+-   [The Cave of Dragonflies](https://www.dragonflycave.com/) for game
+    mechanics
+-   the [Pokémon Slots](https://sites.google.com/site/pokemonslots)
     website for encounter rates
+-   the [pret/pokered GitHub repo](https://github.com/pret/pokered) for
+    a disassembly of the games
 
 I also referred to a post I wrote about [using {R6} to simulate an
 Automatic Bell
@@ -130,3 +213,8 @@ Please note that the {safar6} project is released with a [Contributor
 Code of
 Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.
+
+## Disclaimer
+
+I do not condone throwing rocks at any creature, let alone catching and
+imprisoning them.
