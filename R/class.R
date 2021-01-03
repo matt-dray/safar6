@@ -289,7 +289,7 @@ SafariZone <- R6::R6Class("SafariZone",
           } else if (status_angry > 0) {
             X <- min(X * 2, 255)
           }
-          if (sample(0:255, 1) < X) {  # RNG
+          if (encounter_active == TRUE & sample(0:255, 1) < X) {  # RNG
             cat("Wild", pkmn$species, "ran away!\n")
             encounter_active <- FALSE  # break loop
           }
