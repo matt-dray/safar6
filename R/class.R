@@ -60,7 +60,7 @@ SafariZone <- R6::R6Class("SafariZone",
     print = function() {
       cat(paste0(self$steps, "/500\n"),
           paste0("BALLx", self$balls, "\n"),
-          paste0("Transferred to BILL's PC: ", self$captures, "\n"),
+          paste0("BILL's PC: ", self$captures, "\n"),
           sep = "")
     },
 
@@ -86,38 +86,52 @@ SafariZone <- R6::R6Class("SafariZone",
     #' }
     step = function() {
 
-      # You must have steps remaining to continue
+      # Adjust and check steps ----
+
+      # Reduce step number
       if (self$steps > 0) {
         self$steps <- self$steps - 1
         cat(paste0(self$steps, "/500\n"))
       }
 
-      # Encounter
-      if (sample(0:255, 1) < 30) {  # base encounter rate is 30 in Safari Zone
+      # Check if steps have run out and end game if so
+      if (self$steps == 0) {
+
+        # End game notice and results
+        cat("------------------------\n",
+            "PA: Ding-dong!\nTime's up!\nPA: Your SAFARI GAME is over!\n",
+            "Did you get a good haul?\nCome again!\n",
+            "------------------------\nResult: ",
+            self$captures, " transferred to BILL's PC\n",
+            sep = "")
+
+        # Print details of catches
+        if (self$captures > 0) {
+          print(self$bills_pc)
+        }
+
+      }
+
+      # Encounter ----
+
+      if (sample(0:255, 1) < 30 &  # base encounter rate is 30 in Safari Zone
+          self$steps > 0 & self$balls > 0) {
 
         # Select species/level by encounter rate
         pkmn <-
           dplyr::slice_sample(safar6::pokemon, weight_by = encounter_rate)
         cat("Wild", pkmn$species, paste0("L", pkmn$level), "appeared!\n")
 
-        # Set individual values and calculated Hp and speed
+        # Set individual values and calculate HP and speed
+        iv_hp <- 0
         iv_atk <- sample(1:15, 1)
         iv_def <- sample(1:15, 1)
         iv_spd <- sample(1:15, 1)
         iv_spc <- sample(1:15, 1)
-        iv_hp <- 0
-        if (iv_atk %% 2 != 0) {
-          iv_hp <- iv_hp + 8
-        }
-        if (iv_def %% 2 != 0){
-          iv_hp <- iv_hp + 4
-        }
-        if (iv_spd %% 2 != 0){
-          iv_hp <- iv_hp + 2
-        }
-        if (iv_spc %% 2 != 0){
-          iv_hp <- iv_hp + 1
-        }
+        if (iv_atk %% 2 != 0) { iv_hp <- iv_hp + 8 }
+        if (iv_def %% 2 != 0) { iv_hp <- iv_hp + 4 }
+        if (iv_spd %% 2 != 0) { iv_hp <- iv_hp + 2 }
+        if (iv_spc %% 2 != 0) { iv_hp <- iv_hp + 1 }
         pkmn$hp_indiv <-
           floor((((pkmn$hp_base + iv_hp) * 2) * pkmn$level) / 100) + pkmn$level + 10
         pkmn$speed_indiv <-
@@ -130,7 +144,7 @@ SafariZone <- R6::R6Class("SafariZone",
         status_catch <- pkmn$catch_base
 
         # Encounter while loop
-        while (encounter_active == TRUE) {
+        while (encounter_active == TRUE & self$steps > 0) {
 
           # Adjust eating/anger status ----
 
@@ -289,15 +303,15 @@ SafariZone <- R6::R6Class("SafariZone",
           } else if (status_angry > 0) {
             X <- min(X * 2, 255)
           }
-          if (sample(0:255, 1) < X) {  # RNG
+          if (encounter_active == TRUE & sample(0:255, 1) < X) {  # RNG
             cat("Wild", pkmn$species, "ran away!\n")
             encounter_active <- FALSE  # break loop
           }
 
-          # Check counters ----
+          # Check ball counter ----
 
-          # Check if balls or steps remain
-          if (self$balls == 0 | self$steps == 0) {
+          # Check if balls remain
+          if (self$balls == 0) {
 
             # End game notice and results
             cat("------------------------\n",
@@ -312,6 +326,7 @@ SafariZone <- R6::R6Class("SafariZone",
               print(self$bills_pc)
             }
 
+            self$steps <- 0  # set steps to zero
             encounter_active <- FALSE   # break loop
 
           }

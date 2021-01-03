@@ -172,7 +172,6 @@ The `$step()` method does the hard work. It contains code that:
 
 -   “First, what is your name?”
 -   “New POKeDEX data will be added for \[x\].”
--   “Do you want to give a nickname to \[x\]?”
 -   an Easter egg…
 
 Feel free to add ideas as

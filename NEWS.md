@@ -1,3 +1,8 @@
+# safar6 0.0.0.9005
+
+* Fixed bug with game ending at 0 steps (#20).
+* Fixed bug with Pokemon running away after another event has already occurred (#18).
+
 # safar6 0.0.0.9004
 
 * Added interactive nicknames (#17).
