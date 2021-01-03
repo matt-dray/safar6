@@ -29,7 +29,7 @@ SafariZone <- R6::R6Class("SafariZone",
     #' @field captures Count of wild Pokemon captured (0 at start).
     captures = 0,
     #' @field bills_pc Details of Wild Pokemon captured (empty at start).
-    bills_pc = data.frame(species = NULL, level = NULL),
+    bills_pc = data.frame(nickname = NULL, species = NULL, level = NULL),
 
     # Methods ----
 
@@ -45,7 +45,8 @@ SafariZone <- R6::R6Class("SafariZone",
         "That'll be $500 please!\n",
         "We only use a special POKe BALL here.\n",
         "BLUE received 30 SAFARI BALLs!\n",
-        "We'll call you on the PA when you run out of time or SAFARI BALLs!\n"
+        "We'll call you on the PA when you run out of time or SAFARI BALLs!\n",
+        sep = ""
       )
     },
 
@@ -187,7 +188,7 @@ SafariZone <- R6::R6Class("SafariZone",
 
               if (F3 >= hp_rng) {
 
-                # Wobble and capture
+                # Wobble, capture, nickname prompt
                 cat("Wobble... ")
                 Sys.sleep(s)
                 cat("Wobble... ")
@@ -195,14 +196,28 @@ SafariZone <- R6::R6Class("SafariZone",
                 cat("Wobble...\n")
                 Sys.sleep(s)
                 cat("All right!\n", pkmn$species, " was caught!\n",
-                    pkmn$species, " was transferred to BILL's PC!\n",
+                    "Do you want to give a nickname to ", pkmn$species, "?",
                     sep = "")
+                name_response <- readline(paste0( "Selection (YES/NO): "))
+
+                # Prompt for nickname if yes
+                if (name_response == "NO") {
+                  pkmn$nickname <- pkmn$species
+                  cat(pkmn$species, " was transferred to BILL's PC!\n")
+                } else if (name_response == "YES") {
+                  nickname <- readline("Nickname: ")
+                  pkmn$nickname <- nickname
+                  cat(nickname, "was transferred to BILL's PC!\n")
+                }
 
                 # Update capture count and Bill's PC
                 self$captures <- self$captures + 1
                 self$bills_pc <- rbind(
                   self$bills_pc,
-                  data.frame(species = pkmn$species, level = pkmn$level)
+                  data.frame(
+                    nickname = pkmn$nickname,
+                    species = pkmn$species,
+                    level = pkmn$level)
                 )
 
                 encounter_active <- FALSE  # break loop
@@ -281,7 +296,7 @@ SafariZone <- R6::R6Class("SafariZone",
 
           # Check counters ----
 
-          # Check if balls remain
+          # Check if balls or steps remain
           if (self$balls == 0 | self$steps == 0) {
 
             # End game notice and results
@@ -298,6 +313,7 @@ SafariZone <- R6::R6Class("SafariZone",
             }
 
             encounter_active <- FALSE   # break loop
+
           }
 
         }
