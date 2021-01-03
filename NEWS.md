@@ -1,3 +1,7 @@
+# safar6 0.0.0.9004
+
+* Added interactive nicknames (#17).
+
 # safar6 0.0.0.9003
 
 * Added wobble logic (#5).
