@@ -62,7 +62,7 @@ Click for (contrived!) example gameplay 👾
 </summary>
 
 ``` r
-sz <- safar6::SafariZone$new()
+> sz <- safar6::SafariZone$new()
 # Welcome to the SAFARI ZONE!
 #  For just $500, you can catch all the Pokemon you want in the park!
 #  Would you like to join the hunt?
@@ -91,6 +91,7 @@ sz <- safar6::SafariZone$new()
 # Selection:
 > 1
 # BLUE used SAFARI BALL!
+# Wobble...
 # Darn! The POKeMON broke free!
 # Wild VENONAT is angry!
 # ------------------------
@@ -99,6 +100,7 @@ sz <- safar6::SafariZone$new()
 # Selection: 
 > 1
 # BLUE used SAFARI BALL!
+# Wobble... Wobble... Wobble...
 # All right!
 # VENONAT was caught!
 # VENONAT was transferred to BILL's PC!
@@ -155,7 +157,7 @@ The `$step()` method does the hard work. It contains code that:
 -   adjusts the ‘angry’ and ‘eating’ values of the target and modifies
     catch rate and run probability as a result (a rock doubles the catch
     rate and the flee chance; bait halves the catch rate, but makes it
-    four times less likely to run )
+    four times less likely to run)
 -   calculates whether the Pokémon will be caught or will run away
 -   terminates the game if steps or balls are depleted
 
@@ -166,7 +168,6 @@ The `$step()` method does the hard work. It contains code that:
 -   “First, what is your name?”
 -   “New POKeDEX data will be added for \[x\].”
 -   “Do you want to give a nickname to \[x\]?”
--   wobble logic
 -   an Easter egg…
 
 Feel free to add ideas as

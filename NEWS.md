@@ -1,3 +1,7 @@
+# safar6 0.0.0.9003
+
+* Added wobble logic (#5).
+
 # safar6 0.0.0.9002
 
 * Added IV calculations (#8).
