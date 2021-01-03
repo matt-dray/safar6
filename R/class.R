@@ -181,7 +181,7 @@ SafariZone <- R6::R6Class("SafariZone",
 
               cat("Wobble...\n")
               Sys.sleep(s)
-              cat("Darn! The POKéMON broke free!\n")
+              cat("Darn! The POKeMON broke free!\n")
 
             } else if (status_catch >= ball_rng) {
 
@@ -214,7 +214,7 @@ SafariZone <- R6::R6Class("SafariZone",
                 } else if (w %in% 10:29) {
                   cat("Wobble...\n")
                   Sys.sleep(s)
-                  cat("Darn! The POKéMON broke free!\n")
+                  cat("Darn! The POKeMON broke free!\n")
                 } else if (w %in% 30:69) {
                   cat("Wobble... ")
                   Sys.sleep(s)
