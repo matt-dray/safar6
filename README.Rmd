@@ -93,7 +93,7 @@ For help with fields and methods see `?safar6::SafariZone`.
 # Selection (YES/NO):
 > YES
 # Nickname: 
-> TAJIRI
+> Tajiri
 # TAJIRI was transferred to BILL's PC!
 > sz$pause()
 # 497/500
@@ -101,7 +101,7 @@ For help with fields and methods see `?safar6::SafariZone`.
 # Transferred to BILL's PC: 1
 > sz$bills_pc
 #   nickname species level
-# 1   TAJIRI RHYHORN    25
+# 1   Tajiri RHYHORN    25
 ```
 </details>
 

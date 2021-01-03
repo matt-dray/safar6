@@ -103,14 +103,19 @@ Click for (contrived!) example gameplay 👾
 # Wobble... Wobble... Wobble...
 # All right!
 # VENONAT was caught!
-# VENONAT was transferred to BILL's PC!
+# Do you want to give a nickname to VENONAT?
+# Selection (YES/NO):
+> YES
+# Nickname: 
+> Tajiri
+# TAJIRI was transferred to BILL's PC!
 > sz$pause()
 # 497/500
 # BALLx28
 # Transferred to BILL's PC: 1
 > sz$bills_pc
-#   species level
-# 1 VENONAT    22
+#   nickname species level
+# 1   Tajiri RHYHORN    25
 ```
 
 </details>
