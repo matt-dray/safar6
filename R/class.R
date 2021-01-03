@@ -157,43 +157,79 @@ SafariZone <- R6::R6Class("SafariZone",
           # Ifelse chain dependent on player selection
           if (player_action %in% c("BALL", "1")) {  # throw Safari Ball
 
-            # Reduce balls by 1
+            # Ball ----
             cat("BLUE used SAFARI BALL!\n")
+
+            # Reduce balls by 1
             self$balls <- self$balls - 1
 
-            # Break free based on catch rate and Safari Ball RNG
-            if (status_catch < sample(0:150, 1)) {
+            # Define HP-related catch factor
+            F1 <- (pkmn$hp_indiv * 255) / 12  # 12 is Safari Ball factor
+            F2 <- max(pkmn$hp_indiv / 4, 1)  # divide by 4, but can't be 0
+            F3 <- min(F1 / F2, 255)  # divide but can't be >255
 
+            # Define wobble factor
+            w <- (floor((pkmn$catch_base * 100) / 150) * F3) / 255  # wobble
+            s <- 1  # wobble delay in seconds
+
+            # Generate RNG for ball and HP
+            ball_rng <- sample(0:150, 1)
+            hp_rng <- sample(0:255, 1)
+
+            # Ifelse break free or catch
+            if (status_catch < ball_rng) {
+
+              cat("Wobble...\n")
+              Sys.sleep(s)
               cat("Darn! The POKeMON broke free!\n")
 
-            } else {  # if it didn't break free, calculate chance of catch
+            } else if (status_catch >= ball_rng) {
 
-              # Catch chance based on Pokemon HP factor
-              F1 <- (pkmn$hp_indiv * 255) / 12  # 12 is Safari Ball factor
-              F2 <- max(pkmn$hp_indiv / 4, 1)  # divide by 4, but can't be 0
-              F3 <- min(F1 / F2, 255)  # divide but can't be >255
+              if (F3 >= hp_rng) {
 
-              # If it didn't break free and HP-related RNG is met
-              if (F3 >= sample(0:255, 1)) {
-
-                # Capture notice
+                # Wobble and capture
+                cat("Wobble... ")
+                Sys.sleep(s)
+                cat("Wobble... ")
+                Sys.sleep(s)
+                cat("Wobble...\n")
+                Sys.sleep(s)
                 cat("All right!\n", pkmn$species, " was caught!\n",
                     pkmn$species, " was transferred to BILL's PC!\n",
                     sep = "")
 
                 # Update capture count and Bill's PC
-                self$captures <- self$captures + 1  # increment catch count
+                self$captures <- self$captures + 1
                 self$bills_pc <- rbind(
                   self$bills_pc,
                   data.frame(species = pkmn$species, level = pkmn$level)
                 )
 
-                # Break loop
-                encounter_active <- FALSE
+                encounter_active <- FALSE  # break loop
 
-              } else {
+              } else {  # second break-free chance
 
-                cat("Darn! The POKeMON broke free!\n")
+                if (w < 10) {
+                  cat("The ball missed the POKeMON!\n")
+                } else if (w %in% 10:29) {
+                  cat("Wobble...\n")
+                  Sys.sleep(s)
+                  cat("Darn! The POKeMON broke free!\n")
+                } else if (w %in% 30:69) {
+                  cat("Wobble... ")
+                  Sys.sleep(s)
+                  cat("Wobble...\n")
+                  Sys.sleep(s)
+                  cat("Aww! It appeared to be caught!\n")
+                } else if (w > 70) {
+                  cat("Wobble... ")
+                  Sys.sleep(s)
+                  cat("Wobble... ")
+                  Sys.sleep(s)
+                  cat("Wobble...\n")
+                  Sys.sleep(s)
+                  cat("Shoot! It was so close too!\n")
+                }
 
               }
 
@@ -201,6 +237,7 @@ SafariZone <- R6::R6Class("SafariZone",
 
           } else if (player_action %in% c("BAIT", "2")) {  # throw bait
 
+            # Choice: bait ----
             cat("BLUE threw some BAIT.\n")
 
             # Make status adjustments
@@ -211,6 +248,7 @@ SafariZone <- R6::R6Class("SafariZone",
 
           } else if (player_action %in% c("ROCK", "3")) {  # throw rock
 
+            # Choice: rock ----
             cat("BLUE threw a ROCK.\n")
 
             # Make status adjustments
@@ -221,6 +259,7 @@ SafariZone <- R6::R6Class("SafariZone",
 
           } else if (player_action %in% c("RUN", "4")) {  # exit encounter
 
+            # Choice: run ----
             cat("Got away safely!")
             encounter_active <- FALSE  # break loop
 
