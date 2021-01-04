@@ -63,13 +63,33 @@ Expand for (contrived) example gameplay 👾
 # Start game: x <- SafariZone$new()
 # Take a step: x$step()
 > x <- SafariZone$new()
+# ------------------------
+# First, what is your name?
+# NEW NAME (1)
+# BLUE (2)
+# GARY (3)
+# JOHN (4)
+# ------------------------
+# Select 1, 2, 3 or 4:
+> 1
+# Your name: 
+> THEW
 # Welcome to the SAFARI ZONE!
-# For just $500, you can catch all the Pokemon you want in the park!
+# For just P500, you can catch all the
+# Pokemon you want in the park!
 # Would you like to join the hunt?
-# > YES NO
-# That'll be $500 please!
+# ------------------------
+# MONEY: P500
+# YES (1) or NO (2)
+# ------------------------
+# Select 1 or 2: 
+> 1
+# That'll be P500 please!
+# ------------------------
+# MONEY: P0
+# ------------------------
 # We only use a special POKe BALL here.
-# BLUE received 30 SAFARI BALLs!
+# THEW received 30 SAFARI BALLs!
 # We'll call you on the PA when you run out of time or SAFARI BALLs!
 > x$step()
 # 499/500
@@ -84,7 +104,7 @@ Expand for (contrived) example gameplay 👾
 # ------------------------
 # Selection: 
 > 3
-# BLUE threw a ROCK.
+# THEW threw a ROCK.
 # Wild VENONAT is angry!
 # ------------------------
 # BALLx30 (1)     BAIT (2)
@@ -92,7 +112,7 @@ Expand for (contrived) example gameplay 👾
 # ------------------------
 # Select 1, 2, 3 or 4: 
 > 1
-# BLUE used SAFARI BALL!
+# THEW used SAFARI BALL!
 # Wobble...
 # Darn! The POKeMON broke free!
 # Wild VENONAT is angry!
@@ -102,7 +122,7 @@ Expand for (contrived) example gameplay 👾
 # ------------------------
 # Select 1, 2, 3 or 4: 
 > 1
-# BLUE used SAFARI BALL!
+# THEW used SAFARI BALL!
 # Wobble... Wobble... Wobble...
 # All right!
 # VENONAT was caught!
@@ -177,18 +197,7 @@ The `$step()` method does the hard work. It contains code that:
 -   calculates whether the Pokémon will be caught or will run away
 -   terminates the game if steps or balls are depleted
 
-## Development
-
-### TODO
-
--   “First, what is your name?”
--   “New POKeDEX data will be added for \[x\].”
--   an Easter egg…
-
-Feel free to add ideas as
-[issues](https://www.github.com/matt-dray/safar6/issues/).
-
-### Not included
+## Omissions
 
 To keep things (much!) simpler than the original, this implementation
 doesn’t include a number of features from the original game. Some
