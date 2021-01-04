@@ -49,6 +49,8 @@ The Pokemon Company (\url{https://www.pokemon.co.jp/}).
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{name}}{Character. Player's name.}
+
 \item{\code{steps}}{Numeric. Steps remaining (500 at start).}
 
 \item{\code{balls}}{Numeric. Safari Balls remaining (30 at start).}

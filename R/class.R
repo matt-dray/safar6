@@ -20,6 +20,8 @@ SafariZone <- R6::R6Class("SafariZone",
 
     # Fields ----
 
+    #' @field name Character. Player's name.
+    name = "BLUE",
     #' @field steps Numeric. Steps remaining (500 at start).
     steps = 500,
     #' @field balls Numeric. Safari Balls remaining (30 at start).
@@ -54,12 +56,13 @@ SafariZone <- R6::R6Class("SafariZone",
       # Set player name
       if (response_name == "1") {
         response_name <- readline("Your name: ")  # ask interactively for name
+        self$name <- response_name
       } else if (response_name == "2") {
-        response_name <- "BLUE"
+        self$name <- "BLUE"
       } else if (response_name == "3") {
-        response_name <- "GARY"
+        self$name <- "GARY"
       } else if (response_name == "4") {
-        response_name <- "JOHN"
+        self$name <- "JOHN"
       }
 
       # Welcome message
@@ -89,7 +92,7 @@ SafariZone <- R6::R6Class("SafariZone",
           "MONEY: P0\n",
           "------------------------\n",
           "We only use a special POKe BALL here.\n",
-          response_name, " received 30 SAFARI BALLs!\n",
+          self$name, " received 30 SAFARI BALLs!\n",
           "We'll call you on the PA when you run\n",
           "out of time or SAFARI BALLs!\n",
           sep = ""
@@ -110,7 +113,7 @@ SafariZone <- R6::R6Class("SafariZone",
           "MONEY: P0\n",
           "------------------------\n",
           "We only use a special POKe BALL here.\n",
-          response_name, " received 30 SAFARI BALLs!\n",
+          self$name, " received 30 SAFARI BALLs!\n",
           "We'll call you on the PA when you run\n",
           "out of time or SAFARI BALLs!\n",
           sep = ""
@@ -268,7 +271,7 @@ SafariZone <- R6::R6Class("SafariZone",
           if (response_action == "1") {  # throw Safari Ball
 
             # Chose to throw ball ----
-            cat(response_name, " used SAFARI BALL!\n", sep = "")
+            cat(self$name, " used SAFARI BALL!\n", sep = "")
 
             # Reduce ball count by 1
             self$balls <- self$balls - 1
@@ -307,14 +310,17 @@ SafariZone <- R6::R6Class("SafariZone",
                 Sys.sleep(S)
 
                 # Print capture notice, ask for nickname
-                cat("All right!\n", pkmn$species, " was caught!\n",
-                    "Do you want to give a nickname to ", pkmn$species, "?",
-                    sep = "")
+                cat(
+                  "All right!\n", pkmn$species, " was caught!\n",
+                  "Do you want to give a nickname to ", pkmn$species, "?\n",
+                  "YES (1) or NO (2)",
+                  sep = ""
+                )
 
-                # Collect player's response, must be "YES" or "NO"
+                # Collect player's response, must be 1 or 2
                 response_nickname <- 0  # set variable outside 1 or 2 to start
                 while(!response_nickname %in% 1:2) {
-                  response_nickname <- readline("Select YES (1) or NO (2): ")
+                  response_nickname <- readline("Select 1 or 2: ")
                 }
 
                 # Prompt for nickname if yes, otherwise nickname is species name
@@ -375,7 +381,7 @@ SafariZone <- R6::R6Class("SafariZone",
           } else if (response_action == "2") {  # throw bait
 
             # Chose to throw bait ----
-            cat(response_name, " threw some BAIT.\n", sep = "")
+            cat(self$name, " threw some BAIT.\n", sep = "")
 
             # Make status adjustments
             status_catch  <- floor(status_catch / 2)  # halve catch rate
@@ -386,7 +392,7 @@ SafariZone <- R6::R6Class("SafariZone",
           } else if (response_action == "3") {  # throw rock
 
             # Chose to throw a rock ----
-            cat(response_name, " threw a ROCK.\n", sep = "")
+            cat(self$name, " threw a ROCK.\n", sep = "")
 
             # Make status adjustments
             status_catch  <- min(status_catch * 2, 255)  # double catch rate
