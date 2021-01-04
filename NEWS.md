@@ -1,6 +1,7 @@
 # safar6 0.0.0.9007
 
 * Added name input to initialise method (#7).
+* Add `$name` field.
 
 # safar6 0.0.0.9006
 

@@ -313,7 +313,9 @@ SafariZone <- R6::R6Class("SafariZone",
                 cat(
                   "All right!\n", pkmn$species, " was caught!\n",
                   "Do you want to give a nickname to ", pkmn$species, "?\n",
-                  "YES (1) or NO (2)",
+                  "------------------------\n",
+                  "YES (1) or NO (2)\n",
+                  "------------------------\n",
                   sep = ""
                 )
 
