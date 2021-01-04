@@ -20,15 +20,16 @@ or
 proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 [![R-CMD-check](https://github.com/matt-dray/safar6/workflows/R-CMD-check/badge.svg)](https://github.com/matt-dray/safar6/actions)
 [![CodeFactor](https://www.codefactor.io/repository/github/matt-dray/safar6/badge)](https://www.codefactor.io/repository/github/matt-dray/safar6)
+[![rostrum.blog post](https://img.shields.io/badge/rostrum.blog-post-008900?style=flat&labelColor=black&logo=data:image/gif;base64,R0lGODlhEAAQAPEAAAAAABWCBAAAAAAAACH5BAlkAAIAIf8LTkVUU0NBUEUyLjADAQAAACwAAAAAEAAQAAAC55QkISIiEoQQQgghRBBCiCAIgiAIgiAIQiAIgSAIgiAIQiAIgRAEQiAQBAQCgUAQEAQEgYAgIAgIBAKBQBAQCAKBQEAgCAgEAoFAIAgEBAKBIBAQCAQCgUAgEAgCgUBAICAgICAgIBAgEBAgEBAgEBAgECAgICAgECAQIBAQIBAgECAgICAgICAgECAQECAQICAgICAgICAgEBAgEBAgEBAgICAgICAgECAQIBAQIBAgECAgICAgIBAgECAQECAQIBAgICAgIBAgIBAgEBAgECAgECAgICAgICAgECAgECAgQIAAAQIKAAAh+QQJZAACACwAAAAAEAAQAAAC55QkIiESIoQQQgghhAhCBCEIgiAIgiAIQiAIgSAIgiAIQiAIgRAEQiAQBAQCgUAQEAQEgYAgIAgIBAKBQBAQCAKBQEAgCAgEAoFAIAgEBAKBIBAQCAQCgUAgEAgCgUBAICAgICAgIBAgEBAgEBAgEBAgECAgICAgECAQIBAQIBAgECAgICAgICAgECAQECAQICAgICAgICAgEBAgEBAgEBAgICAgICAgECAQIBAQIBAgECAgICAgIBAgECAQECAQIBAgICAgIBAgIBAgEBAgECAgECAgICAgICAgECAgECAgQIAAAQIKAAA7)](https://www.rostrum.blog/2021/01/04/safar6/)
 <!-- badges: end -->
 
 ## Summary 
 
-Work in progress: an R package containing an [R6](https://r6.r-lib.org/) class to simulate simplified gameplay elements of [the Safari Zone](https://bulbapedia.bulbagarden.net/wiki/Kanto_Safari_Zone) sub-area from [_Pokémon Blue_](https://bulbapedia.bulbagarden.net/wiki/Generation_I) (1998) with OOP.
+An R package containing an [R6](https://r6.r-lib.org/) class to simulate simplified gameplay elements of [the Safari Zone](https://bulbapedia.bulbagarden.net/wiki/Kanto_Safari_Zone) sub-area from [_Pokémon Blue_](https://bulbapedia.bulbagarden.net/wiki/Generation_I) (1998) with OOP.
 
 The first generation of _Pokémon_ games were developed for [the Nintendo Game Boy](https://en.wikipedia.org/wiki/Game_Boy) by [Game Freak](https://www.gamefreak.co.jp/) and published by [Nintendo](https://www.nintendo.com). Pokémon as a property is owned by [The Pokémon Company](https://www.pokemon.co.jp/).
 
-This project is a demonstration of [the {R6} package](https://r6.r-lib.org/) and the R6-class for object-oriented programming in R. It's purely for learning purposes.
+This project is a demonstration of [the {R6} package](https://r6.r-lib.org/) and the R6-class for object-oriented programming in R. It's purely for learning purposes. You can [read a blog post](https://www.rostrum.blog/2021/01/04/safar6/) about it.
 
 ## Basic gameplay
 
@@ -113,7 +114,10 @@ For help with fields and methods see `?safar6::SafariZone`.
 # All right!
 # VENONAT was caught!
 # Do you want to give a nickname to VENONAT?
-# Select YES (1) or NO (2):
+# ------------------------
+# YES (1) or NO (2)
+# ------------------------
+# Select 1 or 2:
 > 1
 # Nickname: 
 > Tajiri
@@ -124,7 +128,7 @@ For help with fields and methods see `?safar6::SafariZone`.
 # Transferred to BILL's PC: 1
 > x$bills_pc
 #   nickname species level
-# 1   Tajiri RHYHORN    25
+# 1   Tajiri VENONAT    22
 ```
 </details>
 
