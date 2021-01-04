@@ -1,3 +1,9 @@
+# safar6 0.0.0.9006
+
+* Improved code comments.
+* Added while loops to restrict `readline()` input (#13)
+* Added `.onAttach()`/`zzz.R` for startup prompt on how to play.
+
 # safar6 0.0.0.9005
 
 * Fixed bug with game ending at 0 steps (#20).

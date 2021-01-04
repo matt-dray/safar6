@@ -13,7 +13,7 @@
 #'
 #' @export
 #'
-#' @examples \dontrun{ sz <- safar6::SafariZone$new() }
+#' @examples \dontrun{ x <- safar6::SafariZone$new() }
 SafariZone <- R6::R6Class("SafariZone",
 
   public = list(
@@ -52,8 +52,8 @@ SafariZone <- R6::R6Class("SafariZone",
     #' Create a new Safari Zone print method.
     #' @return A console message with steps and balls remaining.
     #' @examples \dontrun{
-    #'     sz <- safar6::SafariZone  # initialise class
-    #'     sz$print()  # print the object, see stats
+    #'     x <- safar6::SafariZone  # initialise class
+    #'     x$print()  # print the object, see stats
     #' }
     print = function() {
       cat(
@@ -69,8 +69,8 @@ SafariZone <- R6::R6Class("SafariZone",
     #' @return A console message with steps and balls remaining.
     #' @seealso \code{\link{print}}
     #' @examples \dontrun{
-    #'     sz <- safar6::SafariZone  # intialise class
-    #'     sz$pause()  # 'pause' the game, see stats
+    #'     x <- safar6::SafariZone  # intialise class
+    #'     x$pause()  # 'pause' the game, see stats
     #' }
     pause = function() {
       self$print()
@@ -80,8 +80,8 @@ SafariZone <- R6::R6Class("SafariZone",
     #' Take a step in the Safari Zone.
     #' @return Either nothing, or a wild encounter.
     #' @examples \dontrun{
-    #'     sz <- safar6::SafariZone  # initialise class
-    #'     sz$step()   # take step, prints steps remaining
+    #'     x <- safar6::SafariZone  # initialise class
+    #'     x$step()   # take step, prints steps remaining
     #' }
     step = function() {
 
@@ -122,7 +122,7 @@ SafariZone <- R6::R6Class("SafariZone",
 
         # Wild Pokemon selection, IV calculation ----
 
-        # Select species/level weighted by encounter rate (slot position)
+        # Select a random species/level weighted by encounter rate
         pkmn <- safar6::pokemon[sample(1:nrow(safar6::pokemon), 1,
                                        prob = safar6::pokemon$encounter_rate), ]
 
@@ -177,16 +177,23 @@ SafariZone <- R6::R6Class("SafariZone",
           # Ask player to choose from options
           cat(
             "------------------------\n",
-            paste0("BALLx", self$balls),
+            paste0(
+              "BALLx",
+              formatC(self$balls, width = 2, format = "d", flag = "0")
+            ),
             " (1)     BAIT (2)\nTHROW ROCK (3)  RUN (4)\n",
+            "------------------------\n",
             sep = ""
           )
 
-          # Collect player's selection (expecting the corresponding number)
-          player_action <- readline("Selection: ")
+          # Collect player's selection, re-ask if not 1 to 4
+          response_action <- 0  # set variable outside 1 to 4 to start
+          while(!response_action %in% 1:4) {
+            response_action <- readline("Select 1, 2, 3 or 4: ")
+          }
 
           # Ifelse chain dependent on player's choice
-          if (player_action %in% c("BALL", "1")) {  # throw Safari Ball
+          if (response_action == "1") {  # throw Safari Ball
 
             # Chose to throw ball ----
             cat("BLUE used SAFARI BALL!\n")
@@ -232,17 +239,20 @@ SafariZone <- R6::R6Class("SafariZone",
                     "Do you want to give a nickname to ", pkmn$species, "?",
                     sep = "")
 
-                # Collect player's response
-                name_response <- readline(paste0( "Selection (YES/NO): "))
+                # Collect player's response, must be "YES" or "NO"
+                response_nickname <- 0  # set variable outside 1 or 2 to start
+                while(!response_nickname %in% 1:2) {
+                  response_nickname <- readline("Select YES (1) or NO (2): ")
+                }
 
                 # Prompt for nickname if yes, otherwise nickname is species name
-                if (name_response == "NO") {
-                  pkmn$nickname <- pkmn$species
-                  cat(pkmn$species, " was transferred to BILL's PC!\n")
-                } else if (name_response == "YES") {
-                  nickname <- readline("Nickname: ")
-                  pkmn$nickname <- nickname
-                  cat(nickname, "was transferred to BILL's PC!\n")
+                if (response_nickname == "2") {
+                  pkmn$nickname <- pkmn$species  # assign species to nickname
+                  cat(pkmn$species, "was transferred to BILL's PC!\n")
+                } else if (response_nickname == "1") {
+                  response_nickname <- readline("Nickname: ")  # ask for name
+                  pkmn$nickname <- response_nickname  # assign to wild Pokemon
+                  cat(response_nickname, "was transferred to BILL's PC!\n")
                 }
 
                 # Incrementcapture counter by 1
@@ -290,7 +300,7 @@ SafariZone <- R6::R6Class("SafariZone",
 
             }
 
-          } else if (player_action %in% c("BAIT", "2")) {  # throw bait
+          } else if (response_action == "2") {  # throw bait
 
             # Chose to throw bait ----
             cat("BLUE threw some BAIT.\n")
@@ -301,7 +311,7 @@ SafariZone <- R6::R6Class("SafariZone",
             status_eating <- min(status_eating, 255) # cap at 255
             status_angry  <- 0  # reset anger status
 
-          } else if (player_action %in% c("ROCK", "3")) {  # throw rock
+          } else if (response_action == "3") {  # throw rock
 
             # Chose to throw a rock ----
             cat("BLUE threw a ROCK.\n")
@@ -312,7 +322,7 @@ SafariZone <- R6::R6Class("SafariZone",
             status_angry  <- min(status_angry, 255) # cap at 255
             status_eating <- 0  # reset eating status
 
-          } else if (player_action %in% c("RUN", "4")) {  # exit encounter
+          } else if (response_action == "4") {  # exit encounter
 
             # Chose to run ----
             cat("Got away safely!")

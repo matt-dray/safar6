@@ -34,53 +34,54 @@ programming in R. It’s purely for learning purposes.
 
 ## Basic gameplay
 
-Professor Oak:
-
-> `Your very own POKéMON legend is about to unfold! A world of dreams and adventures with POKéMON awaits! Let's go!`
-
 Install from GitHub with `remotes::install_github("matt-dray/safar6")`.
 
 The game is text-based and takes place entirely in the console. Start a
-game like `sz <- safar6::SafariZone$new()`. Be warned: it’s tricky. But
+game like `x <- safar6::SafariZone$new()`. Be warned: it’s tricky. But
 then so was the original.
 
-Use `sz$step()` to take a step through the tall grass of the Safari
-Zone. There’s a chance you’ll encounter a wild Pokémon; perhaps it will
-be a rare one at a high level. You’ll be prompted to throw a Safari Ball
-to try and catch it, with the option to throw bait or a rock to
-influence its catchability. Try to catch as many Pokémon as you can
-before you run out of steps or balls.
+Use `x$step()` to take a step through the tall grass of the Safari Zone.
+There’s a chance you’ll encounter a wild Pokémon; perhaps it will be a
+rare one at a high level. You’ll be prompted to throw a Safari Ball to
+try and catch it, with the option to throw bait or a rock to influence
+its catchability. Try to catch as many Pokémon as you can before you run
+out of steps or balls.
 
-Use `sz$pause()` to ‘pause’ the game and see your current stats. You can
-boot up `$bills_pc` to see which Pokémon you’ve caught so far.
+Use `x$pause()` to ‘pause’ the game and see your current stats. You can
+boot up `x$bills_pc` to see which Pokémon you’ve caught so far.
 
 For help with fields and methods see `?safar6::SafariZone`.
 
 <details>
 <summary>
-Click for (contrived!) example gameplay 👾
+Expand for (contrived) example gameplay 👾
 </summary>
 
 ``` r
-> sz <- safar6::SafariZone$new()
+> library(safar6)
+# {safar6}
+# Start game: x <- SafariZone$new()
+# Take a step: x$step()
+> x <- SafariZone$new()
 # Welcome to the SAFARI ZONE!
-#  For just $500, you can catch all the Pokemon you want in the park!
-#  Would you like to join the hunt?
-#  > YES NO
-#  That'll be $500 please!
-#  We only use a special POKe BALL here.
-#  BLUE received 30 SAFARI BALLs!
-#  We'll call you on the PA when you run out of time or SAFARI BALLs!
-> sz$step()
+# For just $500, you can catch all the Pokemon you want in the park!
+# Would you like to join the hunt?
+# > YES NO
+# That'll be $500 please!
+# We only use a special POKe BALL here.
+# BLUE received 30 SAFARI BALLs!
+# We'll call you on the PA when you run out of time or SAFARI BALLs!
+> x$step()
 # 499/500
-> sz$step()
+> x$step()
 # 498/500
-> sz$step()
+> x$step()
 # 497/500
 # Wild VENONAT L22 appeared!
 # ------------------------
 # BALLx30 (1)     BAIT (2)
 # THROW ROCK (3)  RUN (4)
+# ------------------------
 # Selection: 
 > 3
 # BLUE threw a ROCK.
@@ -88,7 +89,8 @@ Click for (contrived!) example gameplay 👾
 # ------------------------
 # BALLx30 (1)     BAIT (2)
 # THROW ROCK (3)  RUN (4)
-# Selection:
+# ------------------------
+# Select 1, 2, 3 or 4: 
 > 1
 # BLUE used SAFARI BALL!
 # Wobble...
@@ -97,23 +99,24 @@ Click for (contrived!) example gameplay 👾
 # ------------------------
 # BALLx29 (1)     BAIT (2)
 # THROW ROCK (3)  RUN (4)
-# Selection: 
+# ------------------------
+# Select 1, 2, 3 or 4: 
 > 1
 # BLUE used SAFARI BALL!
 # Wobble... Wobble... Wobble...
 # All right!
 # VENONAT was caught!
 # Do you want to give a nickname to VENONAT?
-# Selection (YES/NO):
-> YES
+# Select YES (1) or NO (2):
+> 1
 # Nickname: 
 > Tajiri
-# TAJIRI was transferred to BILL's PC!
-> sz$pause()
+# Tajiri was transferred to BILL's PC!
+> x$pause()
 # 497/500
 # BALLx28
 # Transferred to BILL's PC: 1
-> sz$bills_pc
+> x$bills_pc
 #   nickname species level
 # 1   Tajiri RHYHORN    25
 ```
