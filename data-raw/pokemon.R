@@ -3,7 +3,7 @@ pokemon <- data.frame(
   game = "BLUE",
   area = "CENTER",
   tile = "GRASS",
-  species = c("NIDORAN_F", "RHYHORN", "VENONAT", "EXEGGCUTE", "NIDORINA",
+  species = c("NIDORAN F", "RHYHORN", "VENONAT", "EXEGGCUTE", "NIDORINA",
               "EXEGGCUTE", "NIDORINO", "PARASECT", "PINSIR", "CHANSEY"),
   level = c(22, 25, 22, 24, 31,
             25, 31, 30, 23, 23),
