@@ -123,6 +123,14 @@ Expand for (contrived) example gameplay 👾
 
 </details>
 
+## Graphics
+
+Here’s a screenshot of the game in action using the
+[gamelad](https://github.com/matt-dray/gamelad) RStudio theme and [the
+VT323 font](https://fonts.google.com/specimen/VT323).
+
+<img src="https://raw.githubusercontent.com/matt-dray/gamelad/main/img/rstudio-safar6-gamelad-vt323.png" alt="Screenshot of Rstudio showing only the console pane with green text and background, showing text that describes an encounter with a Pokemon." width="50%"/>
+
 ## Details
 
 ### The Safari Zone
