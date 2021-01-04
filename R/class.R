@@ -20,13 +20,13 @@ SafariZone <- R6::R6Class("SafariZone",
 
     # Fields ----
 
-    #' @field steps Steps remaining (500 at start).
+    #' @field steps Numeric. Steps remaining (500 at start).
     steps = 500,
-    #' @field balls Safari Balls remaining (30 at start).
+    #' @field balls Numeric. Safari Balls remaining (30 at start).
     balls = 30,
-    #' @field captures Count of wild Pokemon captured (0 at start).
+    #' @field captures Numeric. Count of wild Pokemon captured (0 at start).
     captures = 0,
-    #' @field bills_pc Dataframe of wild Pokemon captured (empty at start).
+    #' @field bills_pc Dataframe. Details of wild Pokemon caught (empty at start).
     bills_pc = data.frame(nickname = NULL, species = NULL, level = NULL),
 
     # Methods ----
@@ -35,17 +35,89 @@ SafariZone <- R6::R6Class("SafariZone",
     #' Create a new Safari Zone object.
     #' @return A new `SafariZone` object.
     initialize = function() {
+
+      # Ask for player name
       cat(
-        "Welcome to the SAFARI ZONE!\n",
-        "For just $500, you can catch all the Pokemon you want in the park!\n",
-        "Would you like to join the hunt?\n",
-        "> YES NO\n",
-        "That'll be $500 please!\n",
-        "We only use a special POKe BALL here.\n",
-        "BLUE received 30 SAFARI BALLs!\n",
-        "We'll call you on the PA when you run out of time or SAFARI BALLs!\n",
+        "------------------------\n",
+        "First, what is your name?\n",
+        "NEW NAME (1)\nBLUE (2)\nGARY (3)\nJOHN (4)\n",
+        "------------------------\n",
         sep = ""
       )
+
+      # Restrict answer possibilities
+      response_name <- 0  # set variable outside 1 to 4 to start
+      while(!response_name %in% 1:4) {
+        response_name <- readline("Select 1, 2, 3 or 4: ")
+      }
+
+      # Set player name
+      if (response_name == "1") {
+        response_name <- readline("Your name: ")  # ask interactively for name
+      } else if (response_name == "2") {
+        response_name <- "BLUE"
+      } else if (response_name == "3") {
+        response_name <- "GARY"
+      } else if (response_name == "4") {
+        response_name <- "JOHN"
+      }
+
+      # Welcome message
+      cat(
+        "Welcome to the SAFARI ZONE!\n",
+        "For just P500, you can catch all the\nPokemon you want in the park!\n",
+        "Would you like to join the hunt?\n",
+        "------------------------\n",
+        "MONEY: P500\n",
+        "YES (1) or NO (2)\n",
+        "------------------------\n",
+        sep = ""
+      )
+
+      # Restrict answer possibilities
+      response_pay <- 0  # set variable outside 1 or 2 to start
+      while(!response_pay %in% 1:2) {
+        response_pay <- readline("Select 1 or 2: ")
+      }
+
+      if (response_pay == "1") {
+
+        # Instructions to player
+        cat(
+          "That'll be P500 please!\n",
+          "------------------------\n",
+          "MONEY: P0\n",
+          "------------------------\n",
+          "We only use a special POKe BALL here.\n",
+          response_name, " received 30 SAFARI BALLs!\n",
+          "We'll call you on the PA when you run\n",
+          "out of time or SAFARI BALLs!\n",
+          sep = ""
+        )
+
+      } else if (response_pay == "2") {
+
+        # Lol, you do want to play!
+        cat(".")
+        Sys.sleep(1)
+        cat(".")
+        Sys.sleep(1)
+        cat(".")
+        Sys.sleep(1)
+        cat(
+          "That'll be P500 please!\n",
+          "------------------------\n",
+          "MONEY: P0\n",
+          "------------------------\n",
+          "We only use a special POKe BALL here.\n",
+          response_name, " received 30 SAFARI BALLs!\n",
+          "We'll call you on the PA when you run\n",
+          "out of time or SAFARI BALLs!\n",
+          sep = ""
+        )
+
+      }
+
     },
 
     #' @description
@@ -196,7 +268,7 @@ SafariZone <- R6::R6Class("SafariZone",
           if (response_action == "1") {  # throw Safari Ball
 
             # Chose to throw ball ----
-            cat("BLUE used SAFARI BALL!\n")
+            cat(response_name, " used SAFARI BALL!\n", sep = "")
 
             # Reduce ball count by 1
             self$balls <- self$balls - 1
@@ -303,7 +375,7 @@ SafariZone <- R6::R6Class("SafariZone",
           } else if (response_action == "2") {  # throw bait
 
             # Chose to throw bait ----
-            cat("BLUE threw some BAIT.\n")
+            cat(response_name, " threw some BAIT.\n", sep = "")
 
             # Make status adjustments
             status_catch  <- floor(status_catch / 2)  # halve catch rate
@@ -314,7 +386,7 @@ SafariZone <- R6::R6Class("SafariZone",
           } else if (response_action == "3") {  # throw rock
 
             # Chose to throw a rock ----
-            cat("BLUE threw a ROCK.\n")
+            cat(response_name, " threw a ROCK.\n", sep = "")
 
             # Make status adjustments
             status_catch  <- min(status_catch * 2, 255)  # double catch rate
