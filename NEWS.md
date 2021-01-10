@@ -1,3 +1,9 @@
+# safar6 0.1.0
+
+* De-lint the package (#25).
+* Add {lintr} GitHub Action.
+* Bump to 0.1.0.
+
 # safar6 0.0.0.9007
 
 * Added name input to initialise method (#7).
