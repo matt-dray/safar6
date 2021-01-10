@@ -13,8 +13,8 @@
 #'
 #' @export
 #'
-#' @examples \dontrun{ x <- safar6::SafariZone$new() }
-SafariZone <- R6::R6Class("SafariZone",
+#' @examples \dontrun{ x <- safar6::safari_zone$new() }
+safari_zone <- R6::R6Class("SafariZone",
 
   public = list(
 
@@ -28,14 +28,14 @@ SafariZone <- R6::R6Class("SafariZone",
     balls = 30,
     #' @field captures Numeric. Count of wild Pokemon captured (0 at start).
     captures = 0,
-    #' @field bills_pc Dataframe. Details of wild Pokemon caught (empty at start).
+    #' @field bills_pc Dataframe. Details of wild Pokemon caught (empty at
+    #'     start).
     bills_pc = data.frame(nickname = NULL, species = NULL, level = NULL),
 
     # Methods ----
 
-    #' @description
-    #' Create a new Safari Zone object.
-    #' @return A new `SafariZone` object.
+    #' @description Create a new Safari Zone object.
+    #' @return A \code{SafariZone}-class object.
     initialize = function() {
 
       # Ask for player name
@@ -49,7 +49,7 @@ SafariZone <- R6::R6Class("SafariZone",
 
       # Restrict answer possibilities
       response_name <- 0  # set variable outside 1 to 4 to start
-      while(!response_name %in% 1:4) {
+      while (!response_name %in% 1:4) {
         response_name <- readline("Select 1, 2, 3 or 4: ")
       }
 
@@ -79,7 +79,7 @@ SafariZone <- R6::R6Class("SafariZone",
 
       # Restrict answer possibilities
       response_pay <- 0  # set variable outside 1 or 2 to start
-      while(!response_pay %in% 1:2) {
+      while (!response_pay %in% 1:2) {
         response_pay <- readline("Select 1 or 2: ")
       }
 
@@ -127,7 +127,7 @@ SafariZone <- R6::R6Class("SafariZone",
     #' Create a new Safari Zone print method.
     #' @return A console message with steps and balls remaining.
     #' @examples \dontrun{
-    #'     x <- safar6::SafariZone  # initialise class
+    #'     x <- safar6::safari_zone$new()  # initialise class
     #'     x$print()  # print the object, see stats
     #' }
     print = function() {
@@ -144,7 +144,7 @@ SafariZone <- R6::R6Class("SafariZone",
     #' @return A console message with steps and balls remaining.
     #' @seealso \code{\link{print}}
     #' @examples \dontrun{
-    #'     x <- safar6::SafariZone  # intialise class
+    #'     x <- safar6::safari_zone$new()  # intialise class
     #'     x$pause()  # 'pause' the game, see stats
     #' }
     pause = function() {
@@ -155,7 +155,7 @@ SafariZone <- R6::R6Class("SafariZone",
     #' Take a step in the Safari Zone.
     #' @return Either nothing, or a wild encounter.
     #' @examples \dontrun{
-    #'     x <- safar6::SafariZone  # initialise class
+    #'     x <- safar6::safari_zone$new()  # initialise class
     #'     x$step()   # take step, prints steps remaining
     #' }
     step = function() {
@@ -182,7 +182,7 @@ SafariZone <- R6::R6Class("SafariZone",
         )
 
         # Print details of any catches
-        if (self$captures > 0) { print(self$bills_pc) }
+        if (self$captures > 0) print(self$bills_pc)
 
       }
 
@@ -198,8 +198,9 @@ SafariZone <- R6::R6Class("SafariZone",
         # Wild Pokemon selection, IV calculation ----
 
         # Select a random species/level weighted by encounter rate
-        pkmn <- safar6::pokemon[sample(1:nrow(safar6::pokemon), 1,
-                                       prob = safar6::pokemon$encounter_rate), ]
+        pkmn <-
+          safar6::pokemon[sample(seq_along(safar6::pokemon), 1,
+                                 prob = safar6::pokemon$encounter_rate), ]
 
         # Print notice of the wild Pokemon selected
         cat("Wild", pkmn$species, paste0("L", pkmn$level), "appeared!\n")
@@ -212,14 +213,15 @@ SafariZone <- R6::R6Class("SafariZone",
 
         # The HP IV depends on the other IVs and whether they're odd
         iv_hp <- 0
-        if (iv_atk %% 2 != 0) { iv_hp <- iv_hp + 8 }
-        if (iv_def %% 2 != 0) { iv_hp <- iv_hp + 4 }
-        if (iv_spd %% 2 != 0) { iv_hp <- iv_hp + 2 }
-        if (iv_spc %% 2 != 0) { iv_hp <- iv_hp + 1 }
+        if (iv_atk %% 2 != 0) iv_hp <- iv_hp + 8
+        if (iv_def %% 2 != 0) iv_hp <- iv_hp + 4
+        if (iv_spd %% 2 != 0) iv_hp <- iv_hp + 2
+        if (iv_spc %% 2 != 0) iv_hp <- iv_hp + 1
 
         # Calculate the individual HP and speed for the wild Pokemon
-        pkmn$hp_indiv <-
-          floor((((pkmn$hp_base + iv_hp) * 2) * pkmn$level) / 100) + pkmn$level + 10
+        pkmn$hp_indiv <- floor(
+          (((pkmn$hp_base + iv_hp) * 2) * pkmn$level) / 100
+        ) + pkmn$level + 10
         pkmn$speed_indiv <-
           floor((((pkmn$speed_base + iv_spd) * 2) * pkmn$level) / 100) + 5
 
@@ -263,7 +265,7 @@ SafariZone <- R6::R6Class("SafariZone",
 
           # Collect player's selection, re-ask if not 1 to 4
           response_action <- 0  # set variable outside 1 to 4 to start
-          while(!response_action %in% 1:4) {
+          while (!response_action %in% 1:4) {
             response_action <- readline("Select 1, 2, 3 or 4: ")
           }
 
@@ -277,13 +279,13 @@ SafariZone <- R6::R6Class("SafariZone",
             self$balls <- self$balls - 1
 
             # Define HP-related catch factor, 'F'
-            F1 <- (pkmn$hp_indiv * 255) / 12  # 12 is Safari Ball factor
-            F2 <- max(pkmn$hp_indiv / 4, 1)  # divide by 4, but can't be 0
-            F3 <- min(F1 / F2, 255)  # divide but can't be >255
+            f1 <- (pkmn$hp_indiv * 255) / 12  # 12 is Safari Ball factor
+            f2 <- max(pkmn$hp_indiv / 4, 1)  # divide by 4, but can't be 0
+            f3 <- min(f1 / f2, 255)  # divide but can't be >255
 
-            # Define wobble factor, 'W'
-            W <- (floor((pkmn$catch_base * 100) / 150) * F3) / 255  # wobble
-            S <- 1  # wobble delay in seconds
+            # Define wobble factor, 'w'
+            w <- (floor((pkmn$catch_base * 100) / 150) * f3) / 255  # wobble
+            s <- 1  # wobble delay in seconds
 
             # Generate RNG for ball and HP
             ball_rng <- sample(0:150, 1)  # 150 specific to Safari Ball
@@ -294,20 +296,20 @@ SafariZone <- R6::R6Class("SafariZone",
 
               # Breakout
               cat("Wobble...\n")
-              Sys.sleep(S)
+              Sys.sleep(s)
               cat("Darn! The POKeMON broke free!\n")
 
             } else if (status_catch >= ball_rng) {  # ball-related catch success
 
-              if (F3 >= hp_rng) {  # capture
+              if (f3 >= hp_rng) {  # capture
 
                 # Wobble
                 cat("Wobble... ")
-                Sys.sleep(S)
+                Sys.sleep(s)
                 cat("Wobble... ")
-                Sys.sleep(S)
+                Sys.sleep(s)
                 cat("Wobble...\n")
-                Sys.sleep(S)
+                Sys.sleep(s)
 
                 # Print capture notice, ask for nickname
                 cat(
@@ -321,7 +323,7 @@ SafariZone <- R6::R6Class("SafariZone",
 
                 # Collect player's response, must be 1 or 2
                 response_nickname <- 0  # set variable outside 1 or 2 to start
-                while(!response_nickname %in% 1:2) {
+                while (!response_nickname %in% 1:2) {
                   response_nickname <- readline("Select 1 or 2: ")
                 }
 
@@ -354,25 +356,25 @@ SafariZone <- R6::R6Class("SafariZone",
               } else {  # second break-free chance, based on wobble factor
 
                 # HP always max in Safari Zone, so multi-wobble unlikely
-                if (W < 10) {
+                if (w < 10) {
                   cat("The ball missed the POKeMON!\n")
-                } else if (W %in% 10:29) {
+                } else if (w %in% 10:29) {
                   cat("Wobble...\n")
-                  Sys.sleep(S)
+                  Sys.sleep(s)
                   cat("Darn! The POKeMON broke free!\n")
-                } else if (W %in% 30:69) {
+                } else if (w %in% 30:69) {
                   cat("Wobble... ")
-                  Sys.sleep(S)
+                  Sys.sleep(s)
                   cat("Wobble...\n")
-                  Sys.sleep(S)
+                  Sys.sleep(s)
                   cat("Aww! It appeared to be caught!\n")
-                } else if (W > 70) {
+                } else if (w > 70) {
                   cat("Wobble... ")
-                  Sys.sleep(S)
+                  Sys.sleep(s)
                   cat("Wobble... ")
-                  Sys.sleep(S)
+                  Sys.sleep(s)
                   cat("Wobble...\n")
-                  Sys.sleep(S)
+                  Sys.sleep(s)
                   cat("Shoot! It was so close too!\n")
                 }
 
@@ -414,20 +416,20 @@ SafariZone <- R6::R6Class("SafariZone",
 
           # Wild Pokemon's turn ----
 
-          # Define chance to run away, 'X', based on individual speed
-          X <- (pkmn$speed_indiv %% 256) * 2
+          # Define chance to run away, 'x', based on individual speed
+          x <- (pkmn$speed_indiv %% 256) * 2
 
           # Adjust run chance based on eating/anger status
           if (status_eating > 0) {
-            X <- X / 4  # flee chance reduced to a quarter
+            x <- x / 4  # flee chance reduced to a quarter
           } else if (status_angry > 0) {
-            X <- min(X * 2, 255)  # flee chance doubled
+            x <- min(x * 2, 255)  # flee chance doubled
           }
 
           # Set flee RNG
           flee_rng <- sample(0:255, 1)
 
-          if (encounter_active == TRUE & flee_rng < X) {
+          if (encounter_active == TRUE & flee_rng < x) {
             cat("Wild", pkmn$species, "ran away!\n")
             encounter_active <- FALSE  # break loop, Pokemon has fled
           }
@@ -448,7 +450,7 @@ SafariZone <- R6::R6Class("SafariZone",
             )
 
             # Print details of any catches
-            if (self$captures > 0) { print(self$bills_pc) }
+            if (self$captures > 0) print(self$bills_pc)
 
             # Game is over, no more steps can be taken, set field to 0
             self$steps <- 0

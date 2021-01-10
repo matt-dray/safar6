@@ -40,7 +40,7 @@ blog post](https://www.rostrum.blog/2021/01/04/safar6/) about it.
 Install from GitHub with `remotes::install_github("matt-dray/safar6")`.
 
 The game is text-based and takes place entirely in the console. Start a
-game like `x <- safar6::SafariZone$new()`. Be warned: it’s tricky. But
+game like `x <- safar6::safari_zone$new()`. Be warned: it’s tricky. But
 then so was the original.
 
 Use `x$step()` to take a step through the tall grass of the Safari Zone.
@@ -53,7 +53,7 @@ out of steps or balls.
 Use `x$pause()` to ‘pause’ the game and see your current stats. You can
 boot up `x$bills_pc` to see which Pokémon you’ve caught so far.
 
-For help with fields and methods see `?safar6::SafariZone`.
+For help with fields and methods see `?safar6::safari_zone`.
 
 <details>
 <summary>
@@ -63,9 +63,9 @@ Expand for (contrived) example gameplay 👾
 ``` r
 > library(safar6)
 # {safar6}
-# Start game: x <- SafariZone$new()
+# Start game: x <- safari_zone$new()
 # Take a step: x$step()
-> x <- SafariZone$new()
+> x <- safari_zone$new()
 # ------------------------
 # First, what is your name?
 # NEW NAME (1)

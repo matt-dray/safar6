@@ -7,9 +7,11 @@
 \format{
 A data frame with 10 rows and 10 variables:
 \describe{
-\item{game}{The Pokemon generation 1 game variant. \code{BLUE} only for now.}
+\item{game}{The Pokemon generation 1 game variant. \code{BLUE} only for
+now.}
 \item{area}{The area of the Safari Zone (\code{CENTER} only for now)}
-\item{tile}{The terrain on which the player is standing (\code{GRASS} only for now).}
+\item{tile}{The terrain on which the player is standing (\code{GRASS} only
+for now).}
 \item{species}{The encounter Pokemon's species.}
 \item{level}{The encounter Pokemon's level.}
 \item{hp_base}{The base speed for the species.}
@@ -20,7 +22,8 @@ A data frame with 10 rows and 10 variables:
 }
 }
 \source{
-\url{https://github.com/pret/pokered} and \url{https://bulbapedia.bulbagarden.net/}
+\url{https://github.com/pret/pokered} and
+\url{https://bulbapedia.bulbagarden.net/}
 }
 \usage{
 pokemon

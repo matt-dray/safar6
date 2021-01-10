@@ -5,9 +5,11 @@
 #'
 #' @format A data frame with 10 rows and 10 variables:
 #' \describe{
-#'   \item{game}{The Pokemon generation 1 game variant. \code{BLUE} only for now.}
+#'   \item{game}{The Pokemon generation 1 game variant. \code{BLUE} only for
+#'     now.}
 #'   \item{area}{The area of the Safari Zone (\code{CENTER} only for now)}
-#'   \item{tile}{The terrain on which the player is standing (\code{GRASS} only for now).}
+#'   \item{tile}{The terrain on which the player is standing (\code{GRASS} only
+#'     for now).}
 #'   \item{species}{The encounter Pokemon's species.}
 #'   \item{level}{The encounter Pokemon's level.}
 #'   \item{hp_base}{The base speed for the species.}
@@ -16,6 +18,7 @@
 #'   \item{slot}{Encounter rate slot, which determines \code{encounter_rate}}
 #'   \item{encounter_rate}{Chance of encounter.}
 #' }
-#' @source \url{https://github.com/pret/pokered} and \url{https://bulbapedia.bulbagarden.net/}
+#' @source \url{https://github.com/pret/pokered} and
+#'     \url{https://bulbapedia.bulbagarden.net/}
 "pokemon"
 #> [1] "pokemon"
