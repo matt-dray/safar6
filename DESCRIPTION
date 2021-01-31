@@ -1,6 +1,6 @@
 Package: safar6
 Title: Simulate the Safari Zone from Pokemon Blue with R6
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     person(given = "Matt",
            family = "Dray",

@@ -1,8 +1,12 @@
+# safar6 0.1.1
+
+* Text is progressively revealed with `cat_tw()` (#28).
+
 # safar6 0.1.0
 
 * De-lint the package (#25).
 * Add {lintr} GitHub Action.
-* Bump to 0.1.0.
+* Bump to 0.1.0, tag and release.
 
 # safar6 0.0.0.9007
 

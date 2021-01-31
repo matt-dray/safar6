@@ -39,9 +39,9 @@ safari_zone <- R6::R6Class("SafariZone",
     initialize = function() {
 
       # Ask for player name
+      cat_tw("First, what is your name?\n")
       cat(
         "------------------------\n",
-        "First, what is your name?\n",
         "NEW NAME (1)\nBLUE (2)\nGARY (3)\nJOHN (4)\n",
         "------------------------\n",
         sep = ""
@@ -66,10 +66,13 @@ safari_zone <- R6::R6Class("SafariZone",
       }
 
       # Welcome message
-      cat(
+      cat_tw(c(
         "Welcome to the SAFARI ZONE!\n",
-        "For just P500, you can catch all the\nPokemon you want in the park!\n",
-        "Would you like to join the hunt?\n",
+        "For just P500, you can catch all the\n",
+        "Pokemon you want in the park!\n",
+        "Would you like to join the hunt?\n"
+      ))
+      cat(
         "------------------------\n",
         "MONEY: P500\n",
         "YES (1) or NO (2)\n",
@@ -86,38 +89,37 @@ safari_zone <- R6::R6Class("SafariZone",
       if (response_pay == "1") {
 
         # Instructions to player
+        cat_tw("That'll be P500 please!\n")
         cat(
-          "That'll be P500 please!\n",
           "------------------------\n",
           "MONEY: P0\n",
           "------------------------\n",
+          sep = ""
+        )
+        cat_tw(c(
           "We only use a special POKe BALL here.\n",
           self$name, " received 30 SAFARI BALLs!\n",
           "We'll call you on the PA when you run\n",
-          "out of time or SAFARI BALLs!\n",
-          sep = ""
-        )
+          "out of time or SAFARI BALLs!\n"
+        ))
 
       } else if (response_pay == "2") {
 
         # Lol, you do want to play!
-        cat(".")
-        Sys.sleep(1)
-        cat(".")
-        Sys.sleep(1)
-        cat(".")
-        Sys.sleep(1)
+        cat_tw("...", 1)
+        cat_tw("That'll be P500 please!\n")
         cat(
-          "That'll be P500 please!\n",
           "------------------------\n",
           "MONEY: P0\n",
           "------------------------\n",
+          sep = ""
+        )
+        cat_tw(c(
           "We only use a special POKe BALL here.\n",
           self$name, " received 30 SAFARI BALLs!\n",
           "We'll call you on the PA when you run\n",
-          "out of time or SAFARI BALLs!\n",
-          sep = ""
-        )
+          "out of time or SAFARI BALLs!\n"
+        ))
 
       }
 
@@ -172,10 +174,11 @@ safari_zone <- R6::R6Class("SafariZone",
       if (self$steps == 0) {
 
         # End-game notice and results
-        cat(
-          "------------------------\n",
+        cat_tw(c(
           "PA: Ding-dong!\nTime's up!\nPA: Your SAFARI GAME is over!\n",
-          "Did you get a good haul?\nCome again!\n",
+          "Did you get a good haul?\nCome again!\n"
+        ))
+        cat(
           "------------------------\nResult: ",
           self$captures, " transferred to BILL's PC\n",
           sep = ""
@@ -203,7 +206,9 @@ safari_zone <- R6::R6Class("SafariZone",
                                  prob = safar6::pokemon$encounter_rate), ]
 
         # Print notice of the wild Pokemon selected
-        cat("Wild", pkmn$species, paste0("L", pkmn$level), "appeared!\n")
+        cat_tw(c(
+          "Wild ", pkmn$species, paste0(" L", pkmn$level), " appeared!\n"
+        ))
 
         # Set individual values (IVs)
         iv_atk <- sample(1:15, 1)  # attack
@@ -239,10 +244,10 @@ safari_zone <- R6::R6Class("SafariZone",
 
           # Pokemon's accrued anger/eating values depleted by 1 if non-zero
           if (status_eating > 0) {
-            cat("Wild", pkmn$species, "is eating!\n")
+            cat_tw(c("Wild ", pkmn$species, " is eating!\n"))
             status_eating <- status_eating - 1
           } else if (status_angry > 0) {
-            cat("Wild", pkmn$species, "is angry!\n")
+            cat_tw(c("Wild ", pkmn$species, " is angry!\n"))
             status_angry <- status_angry - 1
             if (status_angry == 0) {
               status_catch <- pkmn$catch_base  # returns to original rate
@@ -273,7 +278,7 @@ safari_zone <- R6::R6Class("SafariZone",
           if (response_action == "1") {  # throw Safari Ball
 
             # Chose to throw ball ----
-            cat(self$name, " used SAFARI BALL!\n", sep = "")
+            cat_tw(c(self$name, " used SAFARI BALL!\n"))
 
             # Reduce ball count by 1
             self$balls <- self$balls - 1
@@ -295,26 +300,28 @@ safari_zone <- R6::R6Class("SafariZone",
             if (status_catch < ball_rng) {  # ball-related catch fail
 
               # Breakout
-              cat("Wobble...\n")
+              cat_tw("Wobble...\n")
               Sys.sleep(s)
-              cat("Darn! The POKeMON broke free!\n")
+              cat_tw("Darn! The POKeMON broke free!\n")
 
             } else if (status_catch >= ball_rng) {  # ball-related catch success
 
               if (f3 >= hp_rng) {  # capture
 
                 # Wobble
-                cat("Wobble... ")
+                cat_tw("Wobble... ")
                 Sys.sleep(s)
-                cat("Wobble... ")
+                cat_tw("Wobble... ")
                 Sys.sleep(s)
-                cat("Wobble...\n")
+                cat_tw("Wobble...\n")
                 Sys.sleep(s)
 
                 # Print capture notice, ask for nickname
-                cat(
+                cat_tw(c(
                   "All right!\n", pkmn$species, " was caught!\n",
-                  "Do you want to give a nickname to ", pkmn$species, "?\n",
+                  "Do you want to give a nickname to ", pkmn$species, "?\n"
+                ))
+                cat(
                   "------------------------\n",
                   "YES (1) or NO (2)\n",
                   "------------------------\n",
@@ -330,11 +337,13 @@ safari_zone <- R6::R6Class("SafariZone",
                 # Prompt for nickname if yes, otherwise nickname is species name
                 if (response_nickname == "2") {
                   pkmn$nickname <- pkmn$species  # assign species to nickname
-                  cat(pkmn$species, "was transferred to BILL's PC!\n")
+                  cat_tw(c(pkmn$species, " was transferred to BILL's PC!\n"))
                 } else if (response_nickname == "1") {
                   response_nickname <- readline("Nickname: ")  # ask for name
                   pkmn$nickname <- response_nickname  # assign to wild Pokemon
-                  cat(response_nickname, "was transferred to BILL's PC!\n")
+                  cat_tw(c(
+                    response_nickname, " was transferred to BILL's PC!\n"
+                  ))
                 }
 
                 # Incrementcapture counter by 1
@@ -357,25 +366,25 @@ safari_zone <- R6::R6Class("SafariZone",
 
                 # HP always max in Safari Zone, so multi-wobble unlikely
                 if (w < 10) {
-                  cat("The ball missed the POKeMON!\n")
+                  cat_tw("The ball missed the POKeMON!\n")
                 } else if (w %in% 10:29) {
-                  cat("Wobble...\n")
+                  cat_tw("Wobble...\n")
                   Sys.sleep(s)
-                  cat("Darn! The POKeMON broke free!\n")
+                  cat_tw("Darn! The POKeMON broke free!\n")
                 } else if (w %in% 30:69) {
-                  cat("Wobble... ")
+                  cat_tw("Wobble... ")
                   Sys.sleep(s)
-                  cat("Wobble...\n")
+                  cat_tw("Wobble...\n")
                   Sys.sleep(s)
-                  cat("Aww! It appeared to be caught!\n")
+                  cat_tw("Aww! It appeared to be caught!\n")
                 } else if (w > 70) {
-                  cat("Wobble... ")
+                  cat_tw("Wobble... ")
                   Sys.sleep(s)
-                  cat("Wobble... ")
+                  cat_tw("Wobble... ")
                   Sys.sleep(s)
-                  cat("Wobble...\n")
+                  cat_tw("Wobble...\n")
                   Sys.sleep(s)
-                  cat("Shoot! It was so close too!\n")
+                  cat_tw("Shoot! It was so close too!\n")
                 }
 
               }
@@ -385,7 +394,7 @@ safari_zone <- R6::R6Class("SafariZone",
           } else if (response_action == "2") {  # throw bait
 
             # Chose to throw bait ----
-            cat(self$name, " threw some BAIT.\n", sep = "")
+            cat_tw(c(self$name, " threw some BAIT.\n"))
 
             # Make status adjustments
             status_catch  <- floor(status_catch / 2)  # halve catch rate
@@ -396,7 +405,7 @@ safari_zone <- R6::R6Class("SafariZone",
           } else if (response_action == "3") {  # throw rock
 
             # Chose to throw a rock ----
-            cat(self$name, " threw a ROCK.\n", sep = "")
+            cat_tw(c(self$name, " threw a ROCK.\n"))
 
             # Make status adjustments
             status_catch  <- min(status_catch * 2, 255)  # double catch rate
@@ -407,7 +416,7 @@ safari_zone <- R6::R6Class("SafariZone",
           } else if (response_action == "4") {  # exit encounter
 
             # Chose to run ----
-            cat("Got away safely!")
+            cat_tw("Got away safely!\n")
 
             # Break loop, player has voluntarily left the encounter
             encounter_active <- FALSE
@@ -430,7 +439,7 @@ safari_zone <- R6::R6Class("SafariZone",
           flee_rng <- sample(0:255, 1)
 
           if (encounter_active == TRUE & flee_rng < x) {
-            cat("Wild", pkmn$species, "ran away!\n")
+            cat_tw(c("Wild ", pkmn$species, " ran away!\n"))
             encounter_active <- FALSE  # break loop, Pokemon has fled
           }
 
@@ -440,10 +449,11 @@ safari_zone <- R6::R6Class("SafariZone",
           if (self$balls == 0) {
 
             # End game notice and results
-            cat(
-              "------------------------\n",
+            cat_tw(c(
               "PA: Ding-dong!\nTime's up!\nPA: Your SAFARI GAME is over!\n",
-              "Did you get a good haul?\nCome again!\n",
+              "Did you get a good haul?\nCome again!\n"
+            ))
+            cat(
               "------------------------\nResult: ",
               self$captures, " transferred to BILL's PC\n",
               sep = ""
